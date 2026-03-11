@@ -13,4 +13,8 @@ enum TransactionType: string
     // الأنواع الجديدة للحركة اليدوية من شاشة المخازن
     case MANUAL_ADD = 'manual_add';       // تسوية بالزيادة (إضافة يدوية)
     case MANUAL_DEDUCT = 'manual_deduct'; // تسوية بالعجز/توالف (خصم يدوي)
+
+    // المرتجعات
+    case SALES_RETURN = 'sales_return';       // مرتجع مبيعات (زيادة)
+    case PURCHASE_RETURN = 'purchase_return'; // مرتجع مشتريات (نقص)
 }

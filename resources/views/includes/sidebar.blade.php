@@ -35,6 +35,10 @@
             <i class="fas fa-cash-register me-2"></i> المبيعات
         </a>
 
+        <a href="{{ route('returns.index') }}" class="list-group-item list-group-item-action {{ request()->routeIs('returns.*') ? 'active' : '' }}">
+            <i class="fas fa-rotate-left me-2"></i> المرتجعات
+        </a>
+
         <div class="text-uppercase small fw-bold text-secondary mt-4 mb-2 px-3" style="font-size: 11px; letter-spacing: 0.5px;">المالية والتقارير</div>
 
         <a href="{{ route('treasury.index') }}" class="list-group-item list-group-item-action {{ request()->routeIs('treasury.*') ? 'active' : '' }}">

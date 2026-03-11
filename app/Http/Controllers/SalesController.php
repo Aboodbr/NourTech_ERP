@@ -17,8 +17,20 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Mpdf\Mpdf;
 
+/**
+ * Class SalesController
+ * Handles all HTTP requests related to Sales Invoices.
+ * Adheres to Single Responsibility Principle by delegating business logic
+ * (like creating and approving invoices) to the SalesService.
+ */
 class SalesController extends Controller
 {
+    /**
+     * Display a paginated list of sales invoices with search and export capabilities.
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Symfony\Component\HttpFoundation\Response
+     */
     public function index(Request $request)
     {
         // 1. Eager Loading لمنع N+1
@@ -63,6 +75,12 @@ class SalesController extends Controller
         return view('sales.index', compact('invoices'));
     }
 
+    /**
+     * Show the form for creating a new sales invoice.
+     * Uses caching for reference data to optimize performance.
+     *
+     * @return \Illuminate\View\View
+     */
     public function create()
     {
         // 5. Caching لتقليل ضربات الداتا بيز
@@ -74,6 +92,14 @@ class SalesController extends Controller
         return view('sales.create', compact('customers', 'warehouses', 'products'));
     }
 
+    /**
+     * Store a newly created sales invoice as a draft.
+     * Delegates creation logic to SalesService.
+     *
+     * @param SaleRequest $request Validated request data.
+     * @param SalesService $service The service handling the business logic.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(SaleRequest $request, SalesService $service)
     {
         DB::beginTransaction();
@@ -89,6 +115,13 @@ class SalesController extends Controller
         }
     }
 
+    /**
+     * Show the form for editing a draft sales invoice.
+     * Prevents editing if the invoice is already approved.
+     *
+     * @param Invoice $invoice The invoice to edit.
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function edit(Invoice $invoice)
     {
         if ($invoice->status == 'approved') {
@@ -104,6 +137,15 @@ class SalesController extends Controller
         return view('sales.edit', compact('invoice', 'customers', 'warehouses', 'products'));
     }
 
+    /**
+     * Update an existing draft sales invoice.
+     * Delegates update logic to SalesService.
+     *
+     * @param SaleRequest $request Validated request data.
+     * @param Invoice $invoice The invoice being updated.
+     * @param SalesService $service The service handling the business logic.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(SaleRequest $request, Invoice $invoice, SalesService $service)
     {
         DB::beginTransaction();
@@ -119,6 +161,12 @@ class SalesController extends Controller
         }
     }
 
+    /**
+     * Fetch the details of a specific sales invoice via AJAX.
+     *
+     * @param int $id The ID of the invoice.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id)
     {
         try {
@@ -130,6 +178,14 @@ class SalesController extends Controller
         }
     }
 
+    /**
+     * Approve and finalize a sales invoice.
+     * This triggers the deduction of stock quantities via the SalesService.
+     *
+     * @param Invoice $invoice The invoice to approve.
+     * @param SalesService $service The service handling the business logic.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function approve(Invoice $invoice, SalesService $service)
     {
         DB::beginTransaction();
@@ -145,6 +201,13 @@ class SalesController extends Controller
         }
     }
 
+    /**
+     * Delete a draft sales invoice.
+     * Prevents deletion if the invoice is already approved.
+     *
+     * @param Invoice $invoice The invoice to delete.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy(Invoice $invoice)
     {
         if ($invoice->status == 'approved') {

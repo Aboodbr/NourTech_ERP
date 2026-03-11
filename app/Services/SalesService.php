@@ -7,12 +7,19 @@ use App\Models\Invoice;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class SalesService
+ * Encapsulates the core business logic related to Sales Operations.
+ * Interacts with InventoryService to execute necessary stock movements.
+ */
 class SalesService
 {
     protected $inventoryService;
 
     /**
-     * حقن خدمة المخازن لكي نتمكن من الخصم والإضافة عند ترحيل الفواتير
+     * Inject InventoryService to handle stock deductions upon invoice approval.
+     *
+     * @param InventoryService $inventoryService
      */
     public function __construct(InventoryService $inventoryService)
     {
@@ -20,7 +27,12 @@ class SalesService
     }
 
     /**
-     * 1. إنشاء فاتورة مبيعات جديدة (مسودة)
+     * 1. Create a new Sales Invoice (Draft mode).
+     * Calculates totals and inserts line items in a single transaction.
+     *
+     * @param array $data Invoice header data (customer_id, warehouse_id, etc.)
+     * @param array $items Array of invoice line items (product_id, quantity, unit_price)
+     * @return \App\Models\Invoice
      */
     public function createInvoice(array $data, array $items)
     {
@@ -55,7 +67,14 @@ class SalesService
     }
 
     /**
-     * 2. تحديث فاتورة مبيعات (مسودة)
+     * 2. Update an existing draft Sales Invoice.
+     * Recalculates totals and rebuilds line items.
+     *
+     * @param Invoice $invoice The invoice being updated.
+     * @param array $data Invoice header data.
+     * @param array $items Array of new invoice line items.
+     * @return \App\Models\Invoice
+     * @throws Exception If the invoice is already approved.
      */
     public function updateInvoice(Invoice $invoice, array $data, array $items)
     {
@@ -90,7 +109,12 @@ class SalesService
     }
 
     /**
-     * 3. ترحيل الفاتورة (خصم الكميات من المخزن واعتماد الفاتورة نهائياً)
+     * 3. Approve Invoice (Deduct quantities from warehouse and finalize the invoice).
+     * Uses InventoryService to ensure data consistency and accuracy in stock tracking.
+     *
+     * @param Invoice $invoice The invoice to approve.
+     * @return \App\Models\Invoice
+     * @throws Exception If the invoice is already approved or has no items.
      */
     public function approveInvoice(Invoice $invoice)
     {

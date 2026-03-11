@@ -8,12 +8,27 @@ use App\Models\PurchaseInvoiceItem;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class PurchasesService
+ * Encapsulates the core business logic related to Purchase Operations.
+ * Interacts with InventoryService to execute stock movements when receiving goods.
+ */
 class PurchasesService
 {
+    /**
+     * Inject InventoryService to handle stock additions upon invoice approval.
+     *
+     * @param InventoryService $inventoryService
+     */
     public function __construct(protected InventoryService $inventoryService) {}
 
     /**
-     * إنشاء فاتورة شراء (مسودة)
+     * Create a new Purchase Invoice (Draft mode).
+     * Calculates totals and inserts line items in a single transaction.
+     *
+     * @param array $data Invoice header data (supplier_id, warehouse_id, etc.)
+     * @param array $items Array of invoice line items (product_id, quantity, unit_price)
+     * @return \App\Models\PurchaseInvoice
      */
     public function createInvoice(array $data, array $items)
     {
@@ -51,7 +66,14 @@ class PurchasesService
     }
 
     /**
-     * تحديث الفاتورة (للتعديل)
+     * Update an existing draft Purchase Invoice.
+     * Recalculates totals and rebuilds line items.
+     *
+     * @param PurchaseInvoice $invoice The invoice being updated.
+     * @param array $data Invoice header data.
+     * @param array $items Array of new invoice line items.
+     * @return void
+     * @throws Exception If the invoice is already approved.
      */
     public function updateInvoice(PurchaseInvoice $invoice, array $data, array $items)
     {
@@ -89,7 +111,12 @@ class PurchasesService
     }
 
     /**
-     * اعتماد الفاتورة (إضافة للمخزن)
+     * Approve Invoice (Add quantities to warehouse and finalize the invoice).
+     * Uses InventoryService to ensure data consistency and accuracy in stock tracking.
+     *
+     * @param PurchaseInvoice $invoice The invoice to approve.
+     * @return bool
+     * @throws Exception If the invoice is already approved or has no items.
      */
     public function approveInvoice(PurchaseInvoice $invoice)
     {
