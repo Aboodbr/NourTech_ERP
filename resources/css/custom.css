@@ -1,0 +1,131 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap");
+
+:root {
+    /* --- ألوان الهوية البصرية (AMC) --- */
+    --amc-red: #d32f2f; /* أحمر غامق - من حروف AMC */
+    --amc-blue: #1565c0; /* أزرق صناعي - من الترس */
+    --amc-orange: #ff8f00; /* برتقالي - من الشعلة */
+    --amc-dark: #1e272e; /* رمادي فحمي - للخلفيات الغامقة */
+
+    /* --- استبدال متغيرات Bootstrap --- */
+    --bs-primary: var(--amc-red);
+    --bs-primary-rgb: 211, 47, 47;
+
+    --bs-secondary: var(--amc-dark);
+    --bs-info: var(--amc-blue);
+    --bs-warning: var(--amc-orange);
+
+    --bs-body-font-family: "Cairo", sans-serif;
+}
+
+body {
+    background-color: #f4f6f9; /* خلفية فاتحة مريحة للعين */
+}
+
+/* --- تنسيق السايدبار (القائمة الجانبية) --- */
+#sidebar-wrapper {
+    background: linear-gradient(180deg, var(--amc-dark) 0%, #2c3e50 100%);
+    border-left: 4px solid var(--amc-red); /* خط أحمر يفصل القائمة */
+}
+
+.sidebar-heading {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.list-group-item {
+    background-color: transparent;
+    color: #cfd8dc; /* نص فاتح */
+    border: none;
+    padding: 12px 20px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.list-group-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--amc-orange); /* عند المرور يضيء برتقالي */
+    padding-right: 25px; /* حركة بسيطة لليمين */
+}
+
+/* الرابط النشط */
+.list-group-item.active {
+    background-color: var(--amc-red);
+    color: white;
+    border-radius: 0 50px 50px 0; /* شكل جمالي */
+    box-shadow: 2px 2px 10px rgba(211, 47, 47, 0.4);
+}
+
+/* أيقونات السايدبار */
+.list-group-item i {
+    width: 25px;
+    color: var(--amc-orange); /* لون الشعلة للأيقونات */
+}
+.list-group-item.active i {
+    color: white;
+}
+
+/* --- الناف بار (الشريط العلوي) --- */
+.navbar {
+    background-color: white !important;
+    border-bottom: 2px solid var(--amc-blue); /* خط أزرق أسفل الهيدر */
+}
+
+/* --- الكروت (Cards) --- */
+.card {
+    border: none;
+    border-top: 3px solid var(--amc-blue); /* تمييز الكروت */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid #eee;
+    font-weight: 700;
+    color: var(--amc-dark);
+}
+
+/* كروت الإحصائيات الملونة */
+.border-start.border-4.border-success {
+    border-color: var(--amc-blue) !important;
+} /* تغيير الأخضر للأزرق */
+.border-start.border-4.border-danger {
+    border-color: var(--amc-red) !important;
+}
+.border-start.border-4.border-warning {
+    border-color: var(--amc-orange) !important;
+}
+
+/* --- الأزرار --- */
+.btn-primary {
+    background-color: var(--amc-red);
+    border-color: var(--amc-red);
+}
+.btn-primary:hover {
+    background-color: #b71c1c;
+    border-color: #b71c1c;
+}
+
+.btn-dark {
+    background-color: var(--amc-dark);
+}
+
+/* --- الجداول --- */
+thead.table-dark {
+    background-color: var(--amc-dark) !important;
+}
+thead.table-light {
+    background-color: #e3f2fd !important; /* أزرق فاتح جداً */
+    color: var(--amc-blue);
+}
+
+/* --- الوضع الليلي (Dark Mode Adjustments) --- */
+[data-bs-theme="dark"] #sidebar-wrapper {
+    border-left: 1px solid #444;
+}
+[data-bs-theme="dark"] .navbar {
+    border-bottom-color: var(--amc-orange);
+}
