@@ -1,3 +1,4 @@
+{{-- Treasury Module: Main listing --}}
 @extends('layouts.app')
 @section('title', 'الخزينة والحسابات')
 
@@ -33,7 +34,7 @@
 <div class="row mb-4">
     @forelse($treasuries as $treasury)
     <div class="col-md-4 mb-3">
-        <div class="card shadow-sm border-0 border-start border-success border-4 h-100 bg-light">
+        <div class="card shadow-sm border-0 border-start border-success border-4 h-100 bg-body-secondary">
             <div class="card-body d-flex align-items-center justify-content-between">
                 <div>
                     <h6 class="text-muted fw-bold mb-1">{{ $treasury->name }}</h6>
@@ -50,7 +51,7 @@
     @endforelse
 </div>
 
-<div class="card mb-4 shadow-sm border-0 d-print-none" style="background-color: #f8f9fa; border-top: 3px solid var(--amc-blue) !important;">
+<div class="card mb-4 shadow-sm border-0 d-print-none border-top border-primary border-3 bg-body-tertiary">
     <div class="card-body py-3">
         <form method="GET" action="{{ route('treasury.index') }}" class="row g-2 align-items-end">
             
@@ -100,8 +101,8 @@
         @endif
 
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0 text-center">
-                <thead class="table-light">
+            <div class="table-responsive"><table class="table table-hover align-middle mb-0 text-center">
+                <thead class="table-secondary">
                     <tr>
                         <th>رقم السند</th>
                         <th>التاريخ</th>
@@ -152,7 +153,7 @@
                     <tr><td colspan="8" class="text-center py-5 text-muted fw-bold">لا توجد حركات مالية مسجلة مطابقة للبحث</td></tr>
                     @endforelse
                 </tbody>
-            </table>
+            </table></div>
         </div>
     </div>
 </div>

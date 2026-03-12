@@ -30,7 +30,7 @@
     </div>
 </div>
 
-<div class="card mb-4 shadow-sm border-0 d-print-none" style="background-color: #f8f9fa; border-top: 3px solid var(--amc-orange) !important;">
+<div class="card mb-4 shadow-sm border-0 d-print-none border-top border-warning border-3 bg-body-tertiary">
     <div class="card-body py-3">
         <form method="GET" action="{{ route('reports.shortages') }}" class="row g-2 align-items-end">
             <div class="col-md-9">
@@ -55,8 +55,8 @@
 <div class="card shadow-sm border-0 report-container">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0 text-center">
-                <thead class="table-dark">
+            <div class="table-responsive"><table class="table table-hover align-middle mb-0 text-center">
+                <thead class="table-secondary">
                     <tr>
                         <th>كود الصنف</th>
                         <th>اسم الصنف</th>
@@ -77,7 +77,7 @@
                             @if($currentStock <= 0)
                                 <span class="badge bg-danger">رصيد نافد</span>
                             @else
-                                <span class="badge bg-warning text-dark">تجاوز الحد</span>
+                                <span class="badge bg-warning text-body">تجاوز الحد</span>
                             @endif
                         </td>
                     </tr>
@@ -85,7 +85,7 @@
                     <tr><td colspan="5" class="py-5 text-success fw-bold">جميع الأصناف متوفرة ولا توجد نواقص!</td></tr>
                     @endforelse
                 </tbody>
-            </table>
+            </table></div>
         </div>
     </div>
 </div>
@@ -97,7 +97,7 @@
         .report-container, .report-container * { visibility: visible; } 
         .report-container { position: absolute; left: 0; top: 0; width: 100%; border: none; } 
         .d-print-none { display: none !important; } 
-        .table-dark th { background-color: #343a40 !important; color: white !important; } 
+        .table-secondary th { background-color: #343a40 !important; color: white !important; }
     }
 </style>
 @endsection

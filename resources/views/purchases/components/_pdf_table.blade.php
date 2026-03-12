@@ -1,6 +1,6 @@
 <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 14px;">
     <thead>
-        <tr style="background-color: #f0f0f0;">
+        <tr class="table-secondary">
             <th style="border: 1px solid #333; padding: 8px;">رقم الفاتورة</th>
             <th style="border: 1px solid #333; padding: 8px;">المورد</th>
             <th style="border: 1px solid #333; padding: 8px;">المخزن المستلم</th>

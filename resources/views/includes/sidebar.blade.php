@@ -1,7 +1,7 @@
 <div class="bg-dark border-start sidebar shadow-lg" id="sidebar-wrapper">
     
     <div class="sidebar-heading text-center py-4">
-        <div class="d-inline-block bg-white rounded-circle p-1 mb-2 border border-3 border-warning shadow-sm">
+        <div class="d-inline-block bg-body rounded-circle p-1 mb-2 border border-3 border-warning shadow-sm">
             <img src="{{ asset('logo.JPG') }}" alt="AMC Logo" width="70" height="70" class="rounded-circle" style="object-fit: cover;">
         </div>
         <h5 class="fw-bold mb-0 text-white" style="letter-spacing: 1px;">NourTech ERP</h5>
@@ -33,6 +33,10 @@
         
         <a href="{{ route('sales.index') }}" class="list-group-item list-group-item-action {{ request()->routeIs('sales.*') ? 'active' : '' }}">
             <i class="fas fa-cash-register me-2"></i> المبيعات
+        </a>
+
+        <a href="{{ route('returns.index') }}" class="list-group-item list-group-item-action {{ request()->routeIs('returns.*') ? 'active' : '' }}">
+            <i class="fas fa-rotate-left me-2"></i> المرتجعات
         </a>
 
         <div class="text-uppercase small fw-bold text-secondary mt-4 mb-2 px-3" style="font-size: 11px; letter-spacing: 0.5px;">المالية والتقارير</div>

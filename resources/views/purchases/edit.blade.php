@@ -1,3 +1,4 @@
+{{-- Purchases Module: Edit existing purchase --}}
 @extends('layouts.app')
 @section('title', 'تعديل فاتورة شراء')
 @section('content')
@@ -38,11 +39,11 @@
                     <h6 class="fw-bold">الأصناف</h6>
                     <button type="button" class="btn btn-outline-dark btn-sm" onclick="addItem()"><i class="fa-solid fa-plus"></i> إضافة صنف</button>
                 </div>
-                <table class="table table-bordered" id="itemsTable">
-                    <thead class="bg-light"><tr><th width="40%">الخامة</th><th width="15%">الكمية</th><th width="15%">سعر الشراء</th><th>الإجمالي</th><th></th></tr></thead>
+                <div class="table-responsive"><table class="table table-bordered" id="itemsTable">
+                    <thead class="bg-body-secondary"><tr><th width="40%">الخامة</th><th width="15%">الكمية</th><th width="15%">سعر الشراء</th><th>الإجمالي</th><th></th></tr></thead>
                     <tbody></tbody>
                     <tfoot><tr><td colspan="3" class="text-end fw-bold">الإجمالي</td><td class="fw-bold text-success" id="grand_total">0.00</td><td></td></tr></tfoot>
-                </table>
+                </table></div>
             </div>
         </div>
     </div>

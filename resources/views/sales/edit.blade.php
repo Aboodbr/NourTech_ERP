@@ -1,3 +1,4 @@
+{{-- Sales Module: Edit existing invoice --}}
 @extends('layouts.app')
 @section('title', 'تعديل فاتورة المبيعات')
 

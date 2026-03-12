@@ -32,7 +32,7 @@
     </div>
 </div>
 
-<div class="card shadow-sm border-0 mb-4 bg-light d-print-none">
+<div class="card shadow-sm border-0 mb-4 bg-body-secondary d-print-none">
     <div class="card-body p-4">
         <form action="{{ route('reports.item_movement') }}" method="GET" class="row g-3 align-items-end">
             <div class="col-md-5">
@@ -68,14 +68,14 @@
 
 @if($product)
 <div class="card shadow-sm border-0 report-container">
-    <div class="card-header bg-white p-4 border-bottom text-center">
+    <div class="card-header bg-body p-4 border-bottom text-center">
         <h4 class="fw-bold mb-1 text-primary">سجل حركة: {{ $product->name }}</h4>
         <p class="text-muted mb-0">كود الصنف: <span class="fw-bold">{{ $product->sku }}</span></p>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive p-3">
-            <table class="table table-bordered table-striped align-middle text-center mb-0">
-                <thead class="table-dark">
+            <div class="table-responsive"><table class="table table-bordered table-striped align-middle text-center mb-0">
+                <thead class="table-secondary">
                     <tr>
                         <th>التاريخ والوقت</th>
                         <th>المخزن</th>
@@ -116,7 +116,7 @@
                     <tr><td colspan="6" class="py-5 text-muted fw-bold fs-5">لا توجد حركات مسجلة لهذا الصنف في الفترة المحددة</td></tr>
                     @endforelse
                 </tbody>
-            </table>
+            </table></div>
         </div>
     </div>
 </div>
@@ -132,7 +132,7 @@
         .report-container, .report-container * { visibility: visible; } 
         .report-container { position: absolute; left: 0; top: 0; width: 100%; border: none !important; box-shadow: none !important; } 
         .d-print-none { display: none !important; } 
-        .table-dark th { background-color: #343a40 !important; color: white !important; } 
+        .table-secondary th { background-color: #343a40 !important; color: white !important; }
     }
 </style>
 @endsection

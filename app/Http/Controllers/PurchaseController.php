@@ -17,8 +17,20 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Mpdf\Mpdf;
 
+/**
+ * Class PurchaseController
+ * Handles all HTTP requests related to Purchase Invoices.
+ * Adheres to Single Responsibility Principle by delegating business logic
+ * (like creating and approving invoices) to the PurchasesService.
+ */
 class PurchaseController extends Controller
 {
+    /**
+     * Display a paginated list of purchase invoices with search and export capabilities.
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Symfony\Component\HttpFoundation\Response
+     */
     public function index(Request $request)
     {
         // 1. Eager Loading لمنع N+1
@@ -63,6 +75,12 @@ class PurchaseController extends Controller
         return view('purchases.index', compact('invoices'));
     }
 
+    /**
+     * Show the form for creating a new purchase invoice.
+     * Uses caching for reference data to optimize performance.
+     *
+     * @return \Illuminate\View\View
+     */
     public function create()
     {
         // 5. Caching: تخزين الموردين والمخازن في الكاش لتقليل الضغط على قاعدة البيانات
@@ -75,6 +93,14 @@ class PurchaseController extends Controller
         return view('purchases.create', compact('suppliers', 'warehouses', 'products'));
     }
 
+    /**
+     * Store a newly created purchase invoice as a draft.
+     * Delegates creation logic to PurchasesService.
+     *
+     * @param PurchaseRequest $request Validated request data.
+     * @param PurchasesService $service The service handling the business logic.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(PurchaseRequest $request, PurchasesService $service)
     {
         DB::beginTransaction();
@@ -90,6 +116,13 @@ class PurchaseController extends Controller
         }
     }
 
+    /**
+     * Show the form for editing a draft purchase invoice.
+     * Prevents editing if the invoice is already approved.
+     *
+     * @param PurchaseInvoice $purchase The invoice to edit.
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function edit(PurchaseInvoice $purchase)
     {
         if ($purchase->status == 'approved') {
@@ -105,6 +138,15 @@ class PurchaseController extends Controller
         return view('purchases.edit', compact('purchase', 'suppliers', 'warehouses', 'products'));
     }
 
+    /**
+     * Update an existing draft purchase invoice.
+     * Delegates update logic to PurchasesService.
+     *
+     * @param PurchaseRequest $request Validated request data.
+     * @param PurchaseInvoice $purchase The invoice being updated.
+     * @param PurchasesService $service The service handling the business logic.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(PurchaseRequest $request, PurchaseInvoice $purchase, PurchasesService $service)
     {
         DB::beginTransaction();
@@ -120,6 +162,12 @@ class PurchaseController extends Controller
         }
     }
 
+    /**
+     * Fetch the details of a specific purchase invoice via AJAX.
+     *
+     * @param int $id The ID of the invoice.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id)
     {
         try {
@@ -131,6 +179,14 @@ class PurchaseController extends Controller
         }
     }
 
+    /**
+     * Approve and finalize a purchase invoice.
+     * This triggers the addition of stock quantities via the PurchasesService.
+     *
+     * @param PurchaseInvoice $purchase The invoice to approve.
+     * @param PurchasesService $service The service handling the business logic.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function approve(PurchaseInvoice $purchase, PurchasesService $service)
     {
         DB::beginTransaction();
@@ -146,6 +202,13 @@ class PurchaseController extends Controller
         }
     }
 
+    /**
+     * Delete a draft purchase invoice.
+     * Prevents deletion if the invoice is already approved.
+     *
+     * @param PurchaseInvoice $purchase The invoice to delete.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy(PurchaseInvoice $purchase)
     {
         if ($purchase->status == 'approved') {

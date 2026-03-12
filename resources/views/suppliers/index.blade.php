@@ -10,7 +10,7 @@
     </a>
 </div>
 
-<div class="card shadow-sm border-0 mb-4 bg-light">
+<div class="card shadow-sm border-0 mb-4 bg-body-secondary">
     <div class="card-body">
         <form action="{{ route('suppliers.index') }}" method="GET" class="row g-2 align-items-center">
             <div class="col-md-8">
@@ -26,8 +26,8 @@
 <div class="card shadow-sm border-0">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
+            <div class="table-responsive"><table class="table table-hover align-middle mb-0">
+                <thead class="table-secondary">
                     <tr>
                         <th>#</th>
                         <th>اسم المورد</th>
@@ -52,7 +52,7 @@
                     <tr><td colspan="5" class="text-center py-4 text-muted">لا يوجد موردين مسجلين</td></tr>
                     @endforelse
                 </tbody>
-            </table>
+            </table></div>
         </div>
     </div>
 </div>

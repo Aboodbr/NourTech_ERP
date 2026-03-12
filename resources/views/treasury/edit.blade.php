@@ -9,7 +9,7 @@
     </a>
 </div>
 
-<div class="card shadow-sm border-0 border-top border-warning border-3 bg-light">
+<div class="card shadow-sm border-0 border-top border-warning border-3 bg-body-secondary">
     <div class="card-body p-4">
         <form id="editTreasuryForm">
             @csrf

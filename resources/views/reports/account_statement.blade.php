@@ -32,7 +32,7 @@
     </div>
 </div>
 
-<div class="card shadow-sm border-0 mb-4 bg-light d-print-none">
+<div class="card shadow-sm border-0 mb-4 bg-body-secondary d-print-none">
     <div class="card-body p-4">
         <form action="{{ route('reports.account_statement') }}" method="GET" class="row g-3 align-items-end">
             <div class="col-md-2">
@@ -74,7 +74,7 @@
 
 @if($statementData)
 <div class="card shadow-sm border-0 report-container">
-    <div class="card-header bg-white p-4 border-bottom text-center">
+    <div class="card-header bg-body p-4 border-bottom text-center">
         <h4 class="fw-bold mb-1">كشف حساب: {{ $statementData['party']->name }}</h4>
         <p class="text-muted mb-0">الفترة من: <span class="fw-bold">{{ request('from_date') }}</span> إلى: <span class="fw-bold">{{ request('to_date') }}</span></p>
     </div>
@@ -82,13 +82,13 @@
         <div class="row g-0 border-bottom text-center">
             <div class="col-md-4 p-3 border-end">
                 <span class="d-block text-muted mb-1">إجمالي المدين (عليه)</span>
-                <h5 class="fw-bold text-dark">{{ number_format($statementData['total_debit'], 2) }}</h5>
+                <h5 class="fw-bold text-body">{{ number_format($statementData['total_debit'], 2) }}</h5>
             </div>
             <div class="col-md-4 p-3 border-end">
                 <span class="d-block text-muted mb-1">إجمالي الدائن (له)</span>
-                <h5 class="fw-bold text-dark">{{ number_format($statementData['total_credit'], 2) }}</h5>
+                <h5 class="fw-bold text-body">{{ number_format($statementData['total_credit'], 2) }}</h5>
             </div>
-            <div class="col-md-4 p-3 bg-light">
+            <div class="col-md-4 p-3 bg-body-secondary">
                 <span class="d-block text-muted mb-1">صافي الحركة (الرصيد النهائي)</span>
                 <h4 class="fw-bold {{ $statementData['closing_balance'] >= 0 ? 'text-success' : 'text-danger' }}" dir="ltr">
                     {{ number_format($statementData['closing_balance'], 2) }}
@@ -97,8 +97,8 @@
         </div>
 
         <div class="table-responsive p-3">
-            <table class="table table-bordered table-striped align-middle text-center mb-0">
-                <thead class="table-dark">
+            <div class="table-responsive"><table class="table table-bordered table-striped align-middle text-center mb-0">
+                <thead class="table-secondary">
                     <tr>
                         <th>التاريخ</th>
                         <th>المستند</th>
@@ -118,13 +118,13 @@
                         <td>{{ $row['description'] ?? '-' }}</td>
                         <td class="fw-bold text-danger">{{ $row['debit'] > 0 ? number_format($row['debit'], 2) : '-' }}</td>
                         <td class="fw-bold text-success">{{ $row['credit'] > 0 ? number_format($row['credit'], 2) : '-' }}</td>
-                        <td class="fw-bold bg-light" dir="ltr">{{ number_format($row['balance'], 2) }}</td>
+                        <td class="fw-bold bg-body-secondary" dir="ltr">{{ number_format($row['balance'], 2) }}</td>
                     </tr>
                     @empty
                     <tr><td colspan="7" class="py-4 text-muted">لا توجد حركات خلال هذه الفترة</td></tr>
                     @endforelse
                 </tbody>
-            </table>
+            </table></div>
         </div>
     </div>
 </div>
@@ -136,7 +136,7 @@
         .report-container, .report-container * { visibility: visible; }
         .report-container { position: absolute; left: 0; top: 0; width: 100%; border: none; box-shadow: none; }
         .d-print-none { display: none !important; }
-        .table-dark th { background-color: #343a40 !important; color: white !important; }
+        .table-secondary th { background-color: #343a40 !important; color: white !important; }
     }
 </style>
 @endsection

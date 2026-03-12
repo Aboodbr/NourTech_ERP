@@ -1,4 +1,4 @@
-<div class="card mb-4 shadow-sm border-0 d-print-none" style="background-color: #f8f9fa; border-top: 3px solid var(--amc-orange) !important;">
+<div class="card mb-4 shadow-sm border-0 d-print-none border-top border-warning border-3 bg-body-tertiary">
     <div class="card-body py-3">
         <form method="GET" action="{{ url()->current() }}" class="row g-2 align-items-end">
             

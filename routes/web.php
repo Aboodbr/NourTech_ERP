@@ -49,3 +49,10 @@ Route::prefix('reports')->name('reports.')->group(function () {
     Route::get('shortages', [ReportController::class, 'shortages'])->name('shortages');
 });
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::get('/settings', [App\Http\Controllers\SettingController::class, 'index'])->name('settings.index');
+Route::post('/settings', [App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');
+
+Route::get('/returns/invoice-items', [App\Http\Controllers\ReturnTransactionController::class, 'getInvoiceItems'])->name('returns.invoice-items');
+Route::post('/returns/{return}/approve', [App\Http\Controllers\ReturnTransactionController::class, 'approve'])->name('returns.approve');
+Route::resource('returns', App\Http\Controllers\ReturnTransactionController::class)->except(['edit', 'update']);

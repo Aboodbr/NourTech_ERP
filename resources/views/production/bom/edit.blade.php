@@ -16,7 +16,7 @@
             @method('PUT')
 
             <h5 class="fw-bold mb-3 text-amc-red"><i class="fas fa-edit me-2"></i> تعديل بيانات المعادلة</h5>
-            <div class="row mb-4 p-3 bg-light rounded-3 border border-light">
+            <div class="row mb-4 p-3 bg-body-secondary rounded-3 border border-secondary-subtle">
                 
                 <div class="col-md-6 mb-3">
                     <label class="form-label fw-bold">المنتج التام <span class="text-danger">*</span></label>
@@ -46,8 +46,8 @@
             <h5 class="fw-bold mb-3 text-amc-blue mt-4"><i class="fas fa-cubes me-2"></i> المواد الخام</h5>
             
             <div class="table-responsive">
-                <table class="table table-bordered table-hover border-secondary border-opacity-25" id="bomItemsTable">
-                    <thead class="table-light">
+                <div class="table-responsive"><table class="table table-bordered table-hover border-secondary border-opacity-25" id="bomItemsTable">
+                    <thead class="table-secondary">
                         <tr>
                             <th width="50%">المادة الخام</th>
                             <th width="35%">الكمية المطلوبة (للقطعة الواحدة)</th>
@@ -83,14 +83,14 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="3" class="bg-light">
+                            <td colspan="3" class="bg-body-secondary">
                                 <button type="button" class="btn btn-sm btn-success fw-bold px-3" id="addRowBtn">
                                     <i class="fas fa-plus me-1"></i> إضافة مادة خام أخرى
                                 </button>
                             </td>
                         </tr>
                     </tfoot>
-                </table>
+                </table></div>
             </div>
 
             <div class="text-end mt-4 pt-3 border-top">

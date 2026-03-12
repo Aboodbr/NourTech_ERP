@@ -1,6 +1,6 @@
 <div class="table-responsive">
     <table class="table table-hover align-middle">
-        <thead class="table-light">
+        <thead class="table-secondary">
             <tr>
                 <th>رقم الفاتورة</th>
                 <th>العميل</th>
@@ -23,7 +23,7 @@
                     @if($inv->status == 'approved')
                         <span class="badge bg-success">مرحلة (نهائية)</span>
                     @else
-                        <span class="badge bg-warning text-dark">مسودة</span>
+                        <span class="badge bg-warning text-body">مسودة</span>
                     @endif
                 </td>
                 <td class="text-center">
@@ -34,7 +34,7 @@
                         @if($inv->status == 'draft')
                             <a href="{{ route('sales.edit', $inv->id) }}" class="btn btn-outline-success" title="تعديل"><i class="fa-solid fa-pen"></i></a>
                             <button class="btn btn-outline-danger" onclick="deleteInvoice({{ $inv->id }})" title="حذف"><i class="fa-solid fa-trash"></i></button>
-                            <button class="btn btn-outline-warning text-dark" onclick="approveInvoice({{ $inv->id }})" title="ترحيل وخصم من المخزن"><i class="fa-solid fa-check-double"></i></button>
+                            <button class="btn btn-outline-warning text-body" onclick="approveInvoice({{ $inv->id }})" title="ترحيل وخصم من المخزن"><i class="fa-solid fa-check-double"></i></button>
                         @endif
                     </div>
                 </td>

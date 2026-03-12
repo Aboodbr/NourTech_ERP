@@ -4,8 +4,8 @@
 
 @section('content')
 <div class="card shadow-sm mb-4 border-top border-amc-blue border-3">
-    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-        <h5 class="mb-0 fw-bold text-dark"><i class="fas fa-info-circle me-2 text-primary"></i> بيانات المعادلة الأساسية</h5>
+    <div class="card-header bg-body py-3 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold text-body"><i class="fas fa-info-circle me-2 text-primary"></i> بيانات المعادلة الأساسية</h5>
         
         <div class="no-print">
             <button onclick="window.print()" class="btn btn-sm btn-secondary me-2 shadow-sm">
@@ -40,13 +40,13 @@
 </div>
 
 <div class="card shadow-sm">
-    <div class="card-header bg-light py-3">
-        <h5 class="mb-0 fw-bold text-dark"><i class="fas fa-cubes me-2 text-amc-blue"></i> المواد الخام المطلوبة لإنتاج (قطعة واحدة)</h5>
+    <div class="card-header bg-body-secondary py-3">
+        <h5 class="mb-0 fw-bold text-body"><i class="fas fa-cubes me-2 text-amc-blue"></i> المواد الخام المطلوبة لإنتاج (قطعة واحدة)</h5>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-bordered table-striped mb-0 text-center align-middle">
-                <thead class="table-dark">
+            <div class="table-responsive"><table class="table table-bordered table-striped mb-0 text-center align-middle">
+                <thead class="table-secondary">
                     <tr>
                         <th width="10%">م</th>
                         <th width="60%">المادة الخام (الصنف)</th>
@@ -66,7 +66,7 @@
                         </tr>
                     @endforeach
                 </tbody>
-            </table>
+            </table></div>
         </div>
     </div>
 </div>

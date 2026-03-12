@@ -17,8 +17,20 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Mpdf\Mpdf;
 
+/**
+ * Class InventoryController
+ * Handles all HTTP requests related to Inventory Management.
+ * Manages products, stock levels, and manual stock movements.
+ */
 class InventoryController extends Controller
 {
+    /**
+     * Display a list of products and their current stock levels.
+     * Includes search functionality and separates raw materials from finished goods.
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Symfony\Component\HttpFoundation\Response
+     */
     public function index(Request $request)
     {
         $query = Product::with('stocks.warehouse')->withSum('stocks', 'quantity');
@@ -61,12 +73,23 @@ class InventoryController extends Controller
         return view('inventory.index', compact('inventory', 'totalRaw', 'totalFinished', 'warehouses', 'productsList'));
     }
 
+    /**
+     * Show the form for creating a new product.
+     *
+     * @return \Illuminate\View\View
+     */
     public function create()
     {
         return view('inventory.create');
     }
 
     // 🔴 استخدام InventoryRequest بدلاً من Request العادي
+    /**
+     * Store a newly created product in storage.
+     *
+     * @param Request $request Validated request data.
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(InventoryRequest $request)
     {
         DB::beginTransaction();
@@ -83,12 +106,25 @@ class InventoryController extends Controller
         }
     }
 
+    /**
+     * Show the form for editing the specified product.
+     *
+     * @param Product $inventory The product to edit.
+     * @return \Illuminate\View\View
+     */
     public function edit(Product $inventory)
     {
         return view('inventory.edit', compact('inventory'));
     }
 
     // 🔴 استخدام InventoryRequest
+    /**
+     * Update the specified product in storage.
+     *
+     * @param Request $request Validated request data.
+     * @param Product $inventory The product to update.
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(InventoryRequest $request, Product $inventory)
     {
         DB::beginTransaction();
@@ -104,6 +140,12 @@ class InventoryController extends Controller
         }
     }
 
+    /**
+     * Remove the specified product from storage.
+     *
+     * @param Product $inventory The product to delete.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy(Product $inventory)
     {
         if ($inventory->stocks()->where('quantity', '>', 0)->exists()) {
@@ -114,6 +156,14 @@ class InventoryController extends Controller
         return response()->json(['message' => 'تم الحذف بنجاح'], 200);
     }
 
+    /**
+     * Perform a manual stock movement (addition or deduction).
+     * Delegates the core inventory logic to InventoryService.
+     *
+     * @param Request $request Validated request data.
+     * @param InventoryService $inventoryService The service handling the business logic.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function move(InventoryMoveRequest $request, InventoryService $inventoryService)
     {
         $data = $request->validated();

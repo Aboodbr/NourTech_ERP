@@ -4,11 +4,11 @@
 
 @section('content')
 
-<div class="alert alert-info border-0 border-start border-4 border-info shadow-sm mb-4 bg-white" role="alert">
+<div class="alert alert-info border-0 border-start border-4 border-info shadow-sm mb-4 bg-body" role="alert">
     <div class="d-flex">
         <div class="fs-4 text-info me-3"><i class="fas fa-lightbulb"></i></div>
         <div>
-            <h6 class="fw-bold mb-1 text-dark">ما هي هذه الشاشة؟</h6>
+            <h6 class="fw-bold mb-1 text-body">ما هي هذه الشاشة؟</h6>
             <p class="mb-0 text-secondary fs-6">
                 هنا نقوم بتعريف المنتج التام وما يستهلكه من مواد خام (وصفة التصنيع). 
                 <strong>ملاحظة هامة:</strong> المنتجات التي يتم تعريفها هنا فقط هي التي ستظهر لاحقاً في شاشة "أوامر التصنيع".
@@ -28,7 +28,7 @@
             @csrf
 
             <h5 class="fw-bold mb-3 text-amc-red"><i class="fas fa-box-open me-2"></i> أولاً: اختر المنتج المراد تعريفه</h5>
-            <div class="row mb-4 p-3 bg-light rounded-3 border border-light">
+            <div class="row mb-4 p-3 bg-body-secondary rounded-3 border border-secondary-subtle">
                 
                 <div class="col-md-6 mb-3">
                     <label class="form-label fw-bold">المنتج التام (المنتج X) <span class="text-danger">*</span></label>
@@ -56,8 +56,8 @@
             <h5 class="fw-bold mb-3 text-amc-blue mt-4"><i class="fas fa-cubes me-2"></i> ثانياً: المواد الخام التي يستهلكها المنتج (للقطعة الواحدة)</h5>
             
             <div class="table-responsive">
-                <table class="table table-bordered table-hover border-secondary border-opacity-25" id="bomItemsTable">
-                    <thead class="table-light">
+                <div class="table-responsive"><table class="table table-bordered table-hover border-secondary border-opacity-25" id="bomItemsTable">
+                    <thead class="table-secondary">
                         <tr>
                             <th width="50%">المادة الخام (ما سيتم سحبه من المخزن)</th>
                             <th width="35%">الكمية المطلوبة (لإنتاج 1 وحدة من المنتج X)</th>
@@ -89,14 +89,14 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="3" class="bg-light">
+                            <td colspan="3" class="bg-body-secondary">
                                 <button type="button" class="btn btn-sm btn-success fw-bold px-3" id="addRowBtn">
                                     <i class="fas fa-plus me-1"></i> إضافة مادة خام أخرى
                                 </button>
                             </td>
                         </tr>
                     </tfoot>
-                </table>
+                </table></div>
             </div>
 
             <div class="text-end mt-4 pt-3 border-top">

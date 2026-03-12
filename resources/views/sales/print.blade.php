@@ -56,7 +56,7 @@
         </div>
         <div style="width: 35%;">
             <table style="margin: 0;">
-                <tr style="background-color: #333; color: white;">
+                <tr class="table-dark">
                     <td style="border: 1px solid #333;"><strong>الإجمالي النهائي</strong></td>
                     <td style="border: 1px solid #333; font-size: 16px;"><strong>{{ number_format($invoice->total_amount, 2) }}</strong></td>
                 </tr>
