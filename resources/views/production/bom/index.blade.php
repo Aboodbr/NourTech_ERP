@@ -20,8 +20,8 @@
 <div class="card shadow-sm">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover table-striped mb-0 text-center align-middle">
-                <thead class="table-light">
+            <div class="table-responsive"><table class="table table-hover table-striped mb-0 text-center align-middle">
+                <thead class="table-secondary">
                     <tr>
                         <th width="5%">#</th>
                         <th width="25%">المنتج التام (النهائي)</th>
@@ -77,12 +77,12 @@
                         </tr>
                     @endforelse
                 </tbody>
-            </table>
+            </table></div>
         </div>
     </div>
     
     @if($boms->hasPages())
-        <div class="card-footer bg-white border-0 pt-3">
+        <div class="card-footer bg-body border-0 pt-3">
             {{ $boms->links('pagination::bootstrap-5') }}
         </div>
     @endif

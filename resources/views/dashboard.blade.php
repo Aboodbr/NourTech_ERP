@@ -9,7 +9,7 @@
 
 <div class="row g-4 mb-4">
     <div class="col-md-3">
-        <div class="card shadow-sm border-0 border-start border-primary border-4 h-100 bg-light">
+        <div class="card shadow-sm border-0 border-start border-primary border-4 h-100 bg-body-secondary">
             <div class="card-body d-flex align-items-center justify-content-between">
                 <div>
                     <h6 class="text-muted fw-bold mb-2">رصيد الخزن الإجمالي</h6>
@@ -23,7 +23,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="card shadow-sm border-0 border-start border-success border-4 h-100 bg-light">
+        <div class="card shadow-sm border-0 border-start border-success border-4 h-100 bg-body-secondary">
             <div class="card-body d-flex align-items-center justify-content-between">
                 <div>
                     <h6 class="text-muted fw-bold mb-2">إجمالي المبيعات</h6>
@@ -37,7 +37,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="card shadow-sm border-0 border-start border-danger border-4 h-100 bg-light">
+        <div class="card shadow-sm border-0 border-start border-danger border-4 h-100 bg-body-secondary">
             <div class="card-body d-flex align-items-center justify-content-between">
                 <div>
                     <h6 class="text-muted fw-bold mb-2">إجمالي المشتريات</h6>
@@ -51,11 +51,11 @@
     </div>
 
     <div class="col-md-3">
-        <div class="card shadow-sm border-0 border-start border-warning border-4 h-100 bg-light">
+        <div class="card shadow-sm border-0 border-start border-warning border-4 h-100 bg-body-secondary">
             <div class="card-body d-flex align-items-center justify-content-between">
                 <div>
                     <h6 class="text-muted fw-bold mb-2">تنبيهات النواقص</h6>
-                    <h3 class="fw-bold mb-0 text-dark">{{ $shortagesCount }} <span class="fs-6 text-muted">صنف</span></h3>
+                    <h3 class="fw-bold mb-0 text-body">{{ $shortagesCount }} <span class="fs-6 text-muted">صنف</span></h3>
                 </div>
                 <div class="bg-warning bg-opacity-10 p-3 rounded-circle">
                     <i class="fa-solid fa-triangle-exclamation text-warning fs-3"></i>
@@ -71,7 +71,7 @@
 <div class="row g-4">
     <div class="col-md-8">
         <div class="card shadow-sm border-0 h-100">
-            <div class="card-header bg-white p-3 fw-bold"><i class="fa-solid fa-chart-pie me-2 text-primary"></i> المبيعات مقابل المشتريات</div>
+            <div class="card-header bg-body p-3 fw-bold"><i class="fa-solid fa-chart-pie me-2 text-primary"></i> المبيعات مقابل المشتريات</div>
             <div class="card-body d-flex justify-content-center align-items-center">
                 <canvas id="financeChart" style="max-height: 300px;"></canvas>
             </div>
@@ -80,7 +80,7 @@
 
     <div class="col-md-4">
         <div class="card shadow-sm border-0 h-100">
-            <div class="card-header bg-white p-3 fw-bold"><i class="fa-solid fa-clock-rotate-left me-2 text-success"></i> أحدث المبيعات</div>
+            <div class="card-header bg-body p-3 fw-bold"><i class="fa-solid fa-clock-rotate-left me-2 text-success"></i> أحدث المبيعات</div>
             <div class="card-body p-0">
                 <ul class="list-group list-group-flush">
                     @forelse($recentSales as $sale)

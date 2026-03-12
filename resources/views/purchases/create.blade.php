@@ -1,3 +1,4 @@
+{{-- Purchases Module: Create new purchase invoice --}}
 @extends('layouts.app')
 @section('title', 'فاتورة مشتريات جديدة')
 @section('content')

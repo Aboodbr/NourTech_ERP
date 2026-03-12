@@ -12,8 +12,8 @@
 <div class="card shadow-sm border-0 mt-4">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead class="table-light">
+            <div class="table-responsive"><table class="table table-hover align-middle">
+                <thead class="table-secondary">
                     <tr>
                         <th>رقم المرتجع</th>
                         <th>النوع</th>
@@ -44,7 +44,7 @@
                             @if($rt->status == 'approved')
                                 <span class="badge bg-success">مرحلة</span>
                             @else
-                                <span class="badge bg-warning text-dark">مسودة</span>
+                                <span class="badge bg-warning text-body">مسودة</span>
                             @endif
                         </td>
                         <td class="text-center">
@@ -52,7 +52,7 @@
                                 <button class="btn btn-outline-primary" onclick="showReturn({{ $rt->id }})" title="عرض"><i class="fa-solid fa-eye"></i></button>
                                 @if($rt->status == 'draft')
                                     <button class="btn btn-outline-danger" onclick="deleteReturn({{ $rt->id }})" title="حذف"><i class="fa-solid fa-trash"></i></button>
-                                    <button class="btn btn-outline-warning text-dark" onclick="approveReturn({{ $rt->id }})" title="ترحيل المرتجع"><i class="fa-solid fa-check-double"></i></button>
+                                    <button class="btn btn-outline-warning text-body" onclick="approveReturn({{ $rt->id }})" title="ترحيل المرتجع"><i class="fa-solid fa-check-double"></i></button>
                                 @endif
                             </div>
                         </td>
@@ -61,7 +61,7 @@
                     <tr><td colspan="8" class="text-center py-4 text-muted">لا توجد مرتجعات</td></tr>
                     @endforelse
                 </tbody>
-            </table>
+            </table></div>
         </div>
         <div class="d-flex justify-content-center mt-3">{{ $returns->links('pagination::bootstrap-5') }}</div>
     </div>
@@ -83,8 +83,8 @@
                     <div class="col-md-6"><p><strong>الحالة:</strong> <span id="modal_status"></span></p></div>
                     <div class="col-md-6"><p><strong>الإجمالي:</strong> <span id="modal_total" class="text-danger fw-bold"></span></p></div>
                 </div>
-                <table class="table table-bordered table-sm text-center">
-                    <thead class="table-light">
+                <div class="table-responsive"><table class="table table-bordered table-sm text-center">
+                    <thead class="table-secondary">
                         <tr>
                             <th>الصنف</th>
                             <th>الكمية المستردة</th>
@@ -93,7 +93,7 @@
                         </tr>
                     </thead>
                     <tbody id="modal_items_body"></tbody>
-                </table>
+                </table></div>
                 <p><strong>ملاحظات:</strong> <span id="modal_notes"></span></p>
             </div>
             <div class="modal-footer">
@@ -149,7 +149,7 @@
             document.getElementById('modal_date').innerText = data.return_date;
             document.getElementById('modal_model').innerText = data.model ? data.model.name : '-';
             document.getElementById('modal_warehouse').innerText = data.warehouse ? data.warehouse.name : '-';
-            document.getElementById('modal_status').innerHTML = data.status === 'approved' ? '<span class="badge bg-success">مرحلة</span>' : '<span class="badge bg-warning text-dark">مسودة</span>';
+            document.getElementById('modal_status').innerHTML = data.status === 'approved' ? '<span class="badge bg-success">مرحلة</span>' : '<span class="badge bg-warning text-body">مسودة</span>';
             document.getElementById('modal_total').innerText = parseFloat(data.amount).toFixed(2);
             document.getElementById('modal_notes').innerText = data.notes || 'لا يوجد';
 

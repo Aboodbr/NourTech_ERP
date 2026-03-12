@@ -30,7 +30,7 @@
 
     <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
         <thead>
-            <tr style="background-color: #f8f9fa;">
+            <tr class="table-secondary">
                 <th width="5%" style="padding: 10px; border: 1px solid #ddd;">#</th>
                 <th width="40%" style="padding: 10px; border: 1px solid #ddd; text-align: right;">الخامة / المنتج</th>
                 <th width="15%" style="padding: 10px; border: 1px solid #ddd;">الكمية</th>
@@ -66,7 +66,7 @@
 
         <div style="width: 35%;">
             <table style="width: 100%; border-collapse: collapse;">
-                <tr style="background-color: #333; color: white;">
+                <tr class="table-dark">
                     <td style="padding: 10px; border: 1px solid #333; text-align: right;">الإجمالي النهائي</td>
                     <td style="padding: 10px; border: 1px solid #333; text-align: center; font-size: 18px; font-weight: bold;">
                         {{ number_format($invoice->total_amount, 2) }} <span style="font-size: 12px;">ج.م</span>

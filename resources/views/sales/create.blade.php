@@ -1,3 +1,4 @@
+{{-- Sales Module: Create new invoice form --}}
 @extends('layouts.app')
 @section('title', 'إنشاء فاتورة مبيعات')
 

@@ -15,7 +15,7 @@
                 <div><strong>الهاتف:</strong> {{ $partner->phone ?? '-' }}</div>
             </td>
             <td style="border: none; text-align: left; width: 40%; vertical-align: top;">
-                <div style="background-color: #f9f9f9; padding: 10px; border: 1px solid #eee; border-radius: 5px;">
+                <div class="bg-body-tertiary p-3 border border-secondary-subtle rounded">
                     <div><strong>تاريخ الطباعة:</strong> {{ date('Y-m-d') }}</div>
                     <div><strong>نوع الكشف:</strong> {{ $type == 'customer' ? 'عملاء' : 'موردين' }}</div>
                 </div>
@@ -25,7 +25,7 @@
 
     <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
         <thead>
-            <tr style="background-color: #333; color: white;">
+            <tr class="table-dark">
                 <th width="15%" style="padding: 10px; border: 1px solid #333;">التاريخ</th>
                 <th width="40%" style="padding: 10px; border: 1px solid #333;">البيان</th>
                 <th width="15%" style="padding: 10px; border: 1px solid #333;">مدين (عليه)</th>
@@ -50,7 +50,7 @@
 
     <div style="margin-top: 20px; text-align: left;">
         <table style="width: 40%; margin-right: auto; border-collapse: collapse;">
-            <tr style="background-color: #333; color: white;">
+            <tr class="table-dark">
                 <td style="padding: 10px; border: 1px solid #333; text-align: right;">الرصيد النهائي</td>
                 <td style="padding: 10px; border: 1px solid #333; text-align: center; font-size: 18px; font-weight: bold; direction: ltr;">
                     {{ number_format($balance, 2) }}

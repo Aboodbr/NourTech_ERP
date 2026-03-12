@@ -1,3 +1,4 @@
+{{-- Inventory Module: Main listing --}}
 @extends('layouts.app')
 @section('title', 'إدارة المخازن')
 
@@ -10,7 +11,7 @@
         <a href="{{ route('inventory.create') }}" class="btn btn-primary shadow-sm fw-bold">
             <i class="fa-solid fa-plus me-1"></i> تعريف صنف جديد
         </a>
-        <button class="btn btn-warning shadow-sm fw-bold text-dark" data-bs-toggle="modal" data-bs-target="#manualMoveModal">
+        <button class="btn btn-warning shadow-sm fw-bold text-body" data-bs-toggle="modal" data-bs-target="#manualMoveModal">
             <i class="fa-solid fa-right-left me-1"></i> حركة يدوية
         </button>
     </div>
@@ -52,7 +53,7 @@
 <div class="modal fade" id="manualMoveModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header bg-light">
+            <div class="modal-header bg-body-secondary">
                 <h5 class="modal-title fw-bold">تسجيل حركة مخزنية يدوية</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -95,7 +96,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="submit" class="btn btn-warning fw-bold text-dark">تنفيذ الحركة</button>
+                    <button type="submit" class="btn btn-warning fw-bold text-body">تنفيذ الحركة</button>
                 </div>
             </form>
         </div>

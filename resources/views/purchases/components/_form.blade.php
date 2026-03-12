@@ -23,13 +23,13 @@
 </div>
 
 <div class="card mt-4 shadow-sm border-0">
-    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+    <div class="card-header bg-body-secondary d-flex justify-content-between align-items-center">
         <h6 class="mb-0 fw-bold">أصناف الفاتورة</h6>
         <button type="button" class="btn btn-sm btn-primary" onclick="addItem()"><i class="fa-solid fa-plus"></i> إضافة صنف</button>
     </div>
     <div class="card-body p-0">
-        <table class="table table-bordered mb-0" id="itemsTable">
-            <thead class="bg-light">
+        <div class="table-responsive"><table class="table table-bordered mb-0" id="itemsTable">
+            <thead class="bg-body-secondary">
                 <tr>
                     <th width="40%">المادة الخام</th>
                     <th width="15%">الكمية</th>
@@ -46,7 +46,7 @@
                     <td></td>
                 </tr>
             </tfoot>
-        </table>
+        </table></div>
     </div>
 </div>
 

@@ -22,7 +22,7 @@
 
     <div class="row mb-4">
         <div class="col-md-6">
-            <div class="card card-box bg-white p-4">
+            <div class="card card-box bg-body p-4">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h6 class="text-muted mb-1">قيد الانتظار (مخطط)</h6>
@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="card card-box bg-white p-4">
+            <div class="card card-box bg-body p-4">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h6 class="text-muted mb-1">تم الإنتاج (مكتمل)</h6>
@@ -49,13 +49,13 @@
         </div>
     </div>
 
-    <div class="card card-box bg-white p-0">
-        <div class="card-header bg-white py-3">
+    <div class="card card-box bg-body p-0">
+        <div class="card-header bg-body py-3">
             <h5 class="mb-0 text-secondary"><i class="fa-solid fa-list me-2"></i> سجل أوامر التصنيع</h5>
         </div>
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
+            <div class="table-responsive"><table class="table table-hover align-middle mb-0">
+                <thead class="table-secondary">
                     <tr>
                         <th class="ps-4">رقم الأمر</th>
                         <th>المنتج المطلوب</th>
@@ -71,14 +71,14 @@
                     <tr>
                         <td class="ps-4 fw-bold">{{ $order->order_number }}</td>
                         <td>
-                            <span class="fw-bold text-dark">{{ $order->product->name }}</span>
+                            <span class="fw-bold text-body">{{ $order->product->name }}</span>
                         </td>
                         <td>{{ $order->warehouse->name }}</td>
                         <td class="fw-bold fs-5">{{ $order->quantity }}</td>
                         <td>{{ \Carbon\Carbon::parse($order->production_date)->format('Y-m-d') }}</td>
                         <td>
                             @if($order->status == 'planned')
-                                <span class="status-badge bg-warning text-dark"><i class="fa-regular fa-clock"></i> مخطط</span>
+                                <span class="status-badge bg-warning text-body"><i class="fa-regular fa-clock"></i> مخطط</span>
                             @else
                                 <span class="status-badge bg-success text-white"><i class="fa-solid fa-check"></i> مكتمل</span>
                             @endif
@@ -99,7 +99,7 @@
                     </tr>
                     @endforelse
                 </tbody>
-            </table>
+            </table></div>
         </div>
     </div>
 

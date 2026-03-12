@@ -1,7 +1,7 @@
 <div class="bg-dark border-start sidebar shadow-lg" id="sidebar-wrapper">
     
     <div class="sidebar-heading text-center py-4">
-        <div class="d-inline-block bg-white rounded-circle p-1 mb-2 border border-3 border-warning shadow-sm">
+        <div class="d-inline-block bg-body rounded-circle p-1 mb-2 border border-3 border-warning shadow-sm">
             <img src="{{ asset('logo.JPG') }}" alt="AMC Logo" width="70" height="70" class="rounded-circle" style="object-fit: cover;">
         </div>
         <h5 class="fw-bold mb-0 text-white" style="letter-spacing: 1px;">NourTech ERP</h5>

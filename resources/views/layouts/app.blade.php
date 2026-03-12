@@ -129,7 +129,7 @@
 
     /* --- الوضع الليلي Dark Mode --- */
     [data-bs-theme="dark"] body { background-color: #121212 !important; color: #e0e0e0 !important; }
-    [data-bs-theme="dark"] .bg-white, [data-bs-theme="dark"] .card { background-color: #1e1e1e !important; border-color: #333 !important; }
+    [data-bs-theme="dark"] .bg-body, [data-bs-theme="dark"] .card { background-color: #1e1e1e !important; border-color: #333 !important; }
     [data-bs-theme="dark"] .navbar { background-color: #1e1e1e !important; border-bottom-color: var(--amc-orange) !important; }
     [data-bs-theme="dark"] .table { color: #e0e0e0 !important; border-color: #444 !important; }
     [data-bs-theme="dark"] .table thead th { background-color: #2c2c2c !important; color: #fff !important; border-bottom: 2px solid #444; }
@@ -156,7 +156,7 @@
                 <div class="d-flex align-items-center justify-content-between w-100 gap-2">
 
                     <div class="d-flex align-items-center gap-3">
-                        <button class="btn btn-outline-secondary border-0 shadow-sm" id="menu-toggle" style="background: rgba(0,0,0,0.03);">
+                        <button class="btn btn-outline-secondary border-0 shadow-sm bg-body-secondary" id="menu-toggle">
                             <i class="fas fa-bars fs-5"></i>
                         </button>
                         <h5 class="mb-0 fw-bold text-secondary navbar-title text-truncate">

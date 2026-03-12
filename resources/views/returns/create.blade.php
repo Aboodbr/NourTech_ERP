@@ -36,7 +36,7 @@
 <form id="saveReturnForm" class="d-none">
     <input type="hidden" name="type" id="form_type">
     <div class="card shadow-sm border-0 mb-4">
-        <div class="card-header bg-white pb-0 border-0">
+        <div class="card-header bg-body pb-0 border-0">
             <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-info-circle me-2"></i> البيانات الأساسية</h5>
         </div>
         <div class="card-body">
@@ -95,13 +95,13 @@
     </div>
 
     <div class="card shadow-sm border-0">
-        <div class="card-header bg-white pb-0 border-0">
+        <div class="card-header bg-body pb-0 border-0">
             <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-list me-2"></i> أصناف المرتجع</h5>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-bordered align-middle text-center mb-0">
-                    <thead class="table-light">
+                <div class="table-responsive"><table class="table table-bordered align-middle text-center mb-0">
+                    <thead class="table-secondary">
                         <tr>
                             <th>تحديد</th>
                             <th>الصنف</th>
@@ -114,15 +114,15 @@
                         <!-- Items will be injected here -->
                     </tbody>
                     <tfoot>
-                        <tr class="table-light">
+                        <tr class="table-secondary">
                             <td colspan="4" class="text-end fw-bold">الإجمالي الكلي:</td>
                             <td class="fw-bold text-danger fs-5" id="grand_total">0.00</td>
                         </tr>
                     </tfoot>
-                </table>
+                </table></div>
             </div>
         </div>
-        <div class="card-footer bg-white text-end py-3">
+        <div class="card-footer bg-body text-end py-3">
             <button type="submit" class="btn btn-success fw-bold px-4 shadow-sm" id="btn_save" disabled>
                 <i class="fa-solid fa-save me-1"></i> حفظ كمسودة
             </button>

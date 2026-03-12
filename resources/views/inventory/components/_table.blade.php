@@ -1,6 +1,6 @@
 <div class="table-responsive">
     <table class="table table-hover align-middle text-center">
-        <thead class="table-light">
+        <thead class="table-secondary">
             <tr>
                 <th>الكود (SKU)</th>
                 <th>اسم الصنف</th>

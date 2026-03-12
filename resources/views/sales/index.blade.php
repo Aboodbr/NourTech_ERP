@@ -1,3 +1,4 @@
+{{-- Sales Module: Main layout for indexing and filtering --}}
 @extends('layouts.app')
 @section('title', 'إدارة المبيعات')
 
@@ -10,7 +11,7 @@
         <a href="{{ route('customers.index') }}" class="btn btn-info text-white fw-bold shadow-sm">
             <i class="fa-solid fa-users me-1"></i> قائمة العملاء
         </a>
-        <a href="{{ route('customers.create') }}" class="btn btn-warning fw-bold text-dark shadow-sm">
+        <a href="{{ route('customers.create') }}" class="btn btn-warning fw-bold text-body shadow-sm">
             <i class="fa-solid fa-user-plus me-1"></i> عميل جديد
         </a>
         <a href="{{ route('sales.create') }}" class="btn btn-primary fw-bold shadow-sm">
@@ -30,7 +31,7 @@
 <div class="modal fade" id="showInvoiceModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-light">
+            <div class="modal-header bg-body-secondary">
                 <h5 class="modal-title fw-bold">تفاصيل فاتورة المبيعات</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -43,8 +44,8 @@
                     <div class="col-md-6"><p><strong>الحالة:</strong> <span id="modal_status"></span></p></div>
                     <div class="col-md-6"><p><strong>الإجمالي:</strong> <span id="modal_total" class="text-danger fw-bold"></span></p></div>
                 </div>
-                <table class="table table-bordered table-sm text-center">
-                    <thead class="table-light">
+                <div class="table-responsive"><table class="table table-bordered table-sm text-center">
+                    <thead class="table-secondary">
                         <tr>
                             <th>الصنف (منتج تام)</th>
                             <th>الكمية</th>
@@ -53,7 +54,7 @@
                         </tr>
                     </thead>
                     <tbody id="modal_items_body"></tbody>
-                </table>
+                </table></div>
                 <p><strong>ملاحظات:</strong> <span id="modal_notes"></span></p>
             </div>
             <div class="modal-footer">
@@ -110,7 +111,7 @@
             document.getElementById('modal_inv_date').innerText = data.invoice_date;
             document.getElementById('modal_customer').innerText = data.customer ? data.customer.name : '-';
             document.getElementById('modal_warehouse').innerText = data.warehouse ? data.warehouse.name : '-';
-            document.getElementById('modal_status').innerHTML = data.status === 'approved' ? '<span class="badge bg-success">مرحلة</span>' : '<span class="badge bg-warning text-dark">مسودة</span>';
+            document.getElementById('modal_status').innerHTML = data.status === 'approved' ? '<span class="badge bg-success">مرحلة</span>' : '<span class="badge bg-warning text-body">مسودة</span>';
             document.getElementById('modal_total').innerText = parseFloat(data.total_amount).toFixed(2);
             document.getElementById('modal_notes').innerText = data.notes || 'لا يوجد';
 
