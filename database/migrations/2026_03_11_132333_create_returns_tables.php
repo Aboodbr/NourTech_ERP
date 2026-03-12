@@ -13,16 +13,18 @@ return new class extends Migration
     {
         Schema::create('return_transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('type'); // sales_return, purchase_return
-            $table->date('return_date');
+            $table->string('type')->index(); // sales_return, purchase_return
+            $table->date('return_date')->index();
             $table->string('model_type'); // Customer, Supplier
             $table->unsignedBigInteger('model_id');
             $table->foreignId('warehouse_id')->constrained('warehouses')->restrictOnDelete();
             $table->foreignId('treasury_id')->nullable()->constrained('treasuries')->restrictOnDelete();
             $table->text('notes')->nullable();
-            $table->string('status')->default('pending'); // pending, approved
+            $table->string('status')->default('pending')->index(); // pending, approved
             $table->decimal('total_amount', 15, 2)->default(0);
             $table->timestamps();
+
+            $table->index(['model_type', 'model_id']);
         });
 
         Schema::create('return_transaction_items', function (Blueprint $table) {
