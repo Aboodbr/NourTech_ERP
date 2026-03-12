@@ -10,6 +10,7 @@ use App\Models\Supplier;
 use App\Models\Warehouse;
 use App\Models\Treasury;
 use App\Services\ReturnService;
+use App\Http\Requests\StoreReturnTransactionRequest;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -39,19 +40,8 @@ class ReturnTransactionController extends Controller
         return view('returns.create', compact('customers', 'suppliers', 'warehouses', 'treasuries'));
     }
 
-    public function store(Request $request, ReturnService $service)
+    public function store(StoreReturnTransactionRequest $request, ReturnService $service)
     {
-        $request->validate([
-            'type' => 'required|in:sales_return,purchase_return',
-            'warehouse_id' => 'required|exists:warehouses,id',
-            'treasury_id' => 'nullable|exists:treasuries,id',
-            'return_date' => 'required|date',
-            'items' => 'required|array|min:1',
-            'items.*.product_id' => 'required|exists:products,id',
-            'items.*.quantity' => 'required|numeric|min:0.01',
-            'items.*.unit_price' => 'required|numeric|min:0',
-        ]);
-
         $modelType = $request->type === 'sales_return' ? Customer::class : Supplier::class;
         $modelId = $request->type === 'sales_return' ? $request->customer_id : $request->supplier_id;
 

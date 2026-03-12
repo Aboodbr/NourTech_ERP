@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
+            $table->string('company_name')->nullable();
+            $table->string('company_logo')->nullable();
+            $table->string('currency')->nullable();
+            $table->string('timezone')->default('Asia/Riyadh');
+            $table->foreignId('default_warehouse')->nullable()->constrained('warehouses')->nullOnDelete();
+            $table->foreignId('default_treasury')->nullable()->constrained('treasuries')->nullOnDelete();
             $table->timestamps();
         });
     }
