@@ -9,24 +9,24 @@
     </a>
 </div>
 
-<div class="card shadow-sm border-0 mb-4">
+<div class="card shadow-sm border-0 mb-4 bg-light">
     <div class="card-body">
         <form id="fetchInvoiceForm" class="row g-3 align-items-end">
             <div class="col-md-3">
                 <label class="form-label fw-bold">نوع المرتجع</label>
                 <select name="type" id="return_type" class="form-select" required>
                     <option value="">-- اختر --</option>
-                    <option value="sales_return">مرتجع مبيعات (عميل)</option>
-                    <option value="purchase_return">مرتجع مشتريات (مورد)</option>
+                    <option value="sales_return">مرتجع مبيعات (من عميل)</option>
+                    <option value="purchase_return">مرتجع مشتريات (إلى مورد)</option>
                 </select>
             </div>
             <div class="col-md-5">
-                <label class="form-label fw-bold">رقم الفاتورة الأصلية</label>
-                <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="INV-001 أو PUR-001..." required>
+                <label class="form-label fw-bold">رقم الفاتورة الأصلية / أو المعرف (ID)</label>
+                <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="رقم الفاتورة..." required>
             </div>
             <div class="col-md-4">
                 <button type="submit" class="btn btn-dark w-100 fw-bold">
-                    <i class="fa-solid fa-magnifying-glass me-1"></i> جلب أصناف الفاتورة
+                    <i class="fa-solid fa-magnifying-glass me-1"></i> جلب بيانات الفاتورة
                 </button>
             </div>
         </form>
@@ -35,14 +35,15 @@
 
 <form id="saveReturnForm" class="d-none">
     <input type="hidden" name="type" id="form_type">
+    
     <div class="card shadow-sm border-0 mb-4">
-        <div class="card-header bg-body pb-0 border-0">
+        <div class="card-header bg-white pb-0 border-0">
             <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-info-circle me-2"></i> البيانات الأساسية</h5>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6 mb-3" id="customer_container">
-                    <label class="form-label fw-bold">العميل</label>
+                    <label class="form-label fw-bold text-success">العميل</label>
                     <select name="customer_id" id="customer_id" class="form-select select2">
                         <option value="">-- اختر العميل --</option>
                         @foreach($customers as $c)
@@ -52,7 +53,7 @@
                 </div>
 
                 <div class="col-md-6 mb-3 d-none" id="supplier_container">
-                    <label class="form-label fw-bold">المورد</label>
+                    <label class="form-label fw-bold text-danger">المورد</label>
                     <select name="supplier_id" id="supplier_id" class="form-select select2">
                         <option value="">-- اختر المورد --</option>
                         @foreach($suppliers as $s)
@@ -79,7 +80,7 @@
                 <div class="col-md-6 mb-3">
                     <label class="form-label fw-bold">تسوية مالية من/إلى الخزينة؟ (اختياري)</label>
                     <select name="treasury_id" class="form-select select2">
-                        <option value="">-- اترك فارغاً للآجل --</option>
+                        <option value="">-- اترك فارغاً للآجل والتسوية مع الرصيد --</option>
                         @foreach($treasuries as $t)
                             <option value="{{ $t->id }}">{{ $t->name }}</option>
                         @endforeach
@@ -88,20 +89,20 @@
 
                 <div class="col-md-12 mb-3">
                     <label class="form-label fw-bold">سبب المرتجع / ملاحظات</label>
-                    <textarea name="notes" class="form-control" rows="2"></textarea>
+                    <textarea name="notes" class="form-control" rows="2" placeholder="اكتب سبب الاسترجاع إن وجد..."></textarea>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="card shadow-sm border-0">
-        <div class="card-header bg-body pb-0 border-0">
-            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-list me-2"></i> أصناف المرتجع</h5>
+        <div class="card-header bg-white pb-0 border-0">
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-list me-2"></i> أصناف الفاتورة الجاهزة للاسترجاع</h5>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
-                <div class="table-responsive"><table class="table table-bordered align-middle text-center mb-0">
-                    <thead class="table-secondary">
+                <table class="table table-bordered align-middle text-center mb-0">
+                    <thead class="table-light">
                         <tr>
                             <th>تحديد</th>
                             <th>الصنف</th>
@@ -111,20 +112,19 @@
                         </tr>
                     </thead>
                     <tbody id="items_tbody">
-                        <!-- Items will be injected here -->
-                    </tbody>
+                        </tbody>
                     <tfoot>
                         <tr class="table-secondary">
-                            <td colspan="4" class="text-end fw-bold">الإجمالي الكلي:</td>
-                            <td class="fw-bold text-danger fs-5" id="grand_total">0.00</td>
+                            <td colspan="4" class="text-end fw-bold">الإجمالي الكلي للمرتجع:</td>
+                            <td class="fw-bold text-danger fs-5" id="grand_total" dir="ltr">0.00</td>
                         </tr>
                     </tfoot>
-                </table></div>
+                </table>
             </div>
         </div>
-        <div class="card-footer bg-body text-end py-3">
+        <div class="card-footer bg-white text-end py-3">
             <button type="submit" class="btn btn-success fw-bold px-4 shadow-sm" id="btn_save" disabled>
-                <i class="fa-solid fa-save me-1"></i> حفظ كمسودة
+                <i class="fa-solid fa-save me-1"></i> حفظ المرتجع (قيد الانتظار)
             </button>
         </div>
     </div>
@@ -134,6 +134,10 @@
 
 @push('js')
 <script>
+    $(document).ready(function() {
+        $('.select2').select2({ theme: 'bootstrap-5', dir: 'rtl', width: '100%' });
+    });
+
     document.getElementById('fetchInvoiceForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -151,11 +155,9 @@
                 Swal.close();
                 let data = result.body;
 
-                // Show form
                 document.getElementById('saveReturnForm').classList.remove('d-none');
                 document.getElementById('form_type').value = type;
 
-                // Toggle Customer/Supplier
                 if(type === 'sales_return') {
                     document.getElementById('customer_container').classList.remove('d-none');
                     document.getElementById('supplier_container').classList.add('d-none');
@@ -168,33 +170,32 @@
 
                 $('#warehouse_id').val(data.warehouse_id).trigger('change');
 
-                // Render Items
                 let tbody = '';
                 data.items.forEach((item, index) => {
-                    let productName = item.product ? item.product.name : 'محذوف';
+                    let productName = item.product ? item.product.name : 'منتج غير معرف';
                     tbody += `
                         <tr>
                             <td>
-                                <input class="form-check-input select-item-chk" type="checkbox" onchange="toggleItem(${index})">
+                                <input class="form-check-input select-item-chk" type="checkbox" onchange="toggleItem(${index})" style="width: 20px; height: 20px;">
                                 <input type="hidden" name="items[${index}][product_id]" value="${item.product_id}" disabled class="item-input item-product">
                             </td>
-                            <td>${productName} (الكمية الأصلية: ${item.quantity})</td>
+                            <td class="fw-bold">${productName} <br><small class="text-muted">(الكمية الأصلية: ${item.quantity})</small></td>
                             <td>
-                                <input type="number" name="items[${index}][quantity]" class="form-control item-input item-qty" max="${item.quantity}" value="${item.quantity}" oninput="calcTotal()" disabled>
+                                <input type="number" name="items[${index}][quantity]" class="form-control item-input item-qty mx-auto" style="width: 100px;" max="${item.quantity}" min="1" value="${item.quantity}" oninput="calcTotal()" disabled required>
                             </td>
                             <td>
-                                <input type="number" name="items[${index}][unit_price]" class="form-control item-input item-price" value="${item.unit_price}" oninput="calcTotal()" disabled>
+                                <input type="number" step="0.01" name="items[${index}][unit_price]" class="form-control item-input item-price mx-auto" style="width: 120px;" value="${item.unit_price}" oninput="calcTotal()" disabled required>
                             </td>
-                            <td class="fw-bold item-total">${(item.quantity * item.unit_price).toFixed(2)}</td>
+                            <td class="fw-bold text-danger fs-6 item-total" dir="ltr">${(item.quantity * item.unit_price).toFixed(2)}</td>
                         </tr>
                     `;
                 });
 
                 document.getElementById('items_tbody').innerHTML = tbody;
-                calcTotal();
+                calcTotal(); 
 
             } else {
-                Swal.fire('خطأ', result.body.message, 'error');
+                Swal.fire('لم يتم العثور!', result.body.message, 'warning');
             }
         });
     });
@@ -205,7 +206,7 @@
         let inputs = tr.querySelectorAll('.item-input');
 
         inputs.forEach(inp => {
-            inp.disabled = !chk.checked;
+            inp.disabled = !chk.checked; 
         });
 
         calcTotal();
@@ -250,11 +251,11 @@
         .then(res => res.json().then(data => ({status: res.status, body: data})))
         .then(result => {
             if(result.status === 200) {
-                Swal.fire('تم!', result.body.message, 'success').then(() => {
+                Swal.fire('تم الحفظ!', result.body.message, 'success').then(() => {
                     window.location.href = "{{ route('returns.index') }}";
                 });
             } else {
-                Swal.fire('خطأ!', result.body.message, 'error');
+                Swal.fire('خطأ!', result.body.message || 'حدث خطأ غير متوقع', 'error');
             }
         });
     });
