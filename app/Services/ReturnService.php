@@ -3,10 +3,9 @@
 namespace App\Services;
 
 use App\Enums\TransactionType;
-use App\Models\ReturnTransaction;
-use App\Models\Setting;
-use App\Models\FinancialTransaction;
 use App\Models\Customer;
+use App\Models\FinancialTransaction;
+use App\Models\ReturnTransaction;
 use App\Models\Supplier;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +26,6 @@ class ReturnService
             $returnItems = [];
 
             foreach ($items as $item) {
-                // Ensure quantity is positive
                 $qty = abs($item['quantity']);
                 $lineTotal = $qty * $item['unit_price'];
                 $totalAmount += $lineTotal;
@@ -36,12 +34,13 @@ class ReturnService
                     'product_id' => $item['product_id'],
                     'quantity' => $qty,
                     'unit_price' => $item['unit_price'],
-                    'total_price' => $lineTotal,
+                    'total' => $lineTotal,
                 ];
             }
 
-            $data['amount'] = $totalAmount;
-            $data['status'] = 'draft';
+            // 🔴 تم التعديل لتطابق المايجريشن
+            $data['total_amount'] = $totalAmount;
+            $data['status'] = 'pending';
 
             if (empty($data['return_date'])) {
                 $data['return_date'] = date('Y-m-d');
@@ -70,8 +69,6 @@ class ReturnService
                 : TransactionType::PURCHASE_RETURN;
 
             foreach ($returnTx->items as $item) {
-                // Sales Return adds to stock (positive qty)
-                // Purchase Return deducts from stock (negative qty)
                 $qtyToMove = $returnTx->type === 'sales_return'
                     ? abs($item->quantity)
                     : -abs($item->quantity);
@@ -82,45 +79,43 @@ class ReturnService
                     $qtyToMove,
                     $transactionType,
                     $returnTx,
-                    'مرتجع رقم: ' . $returnTx->id
+                    'مرتجع رقم: '.$returnTx->id
                 );
             }
 
-            // Handle Financial aspect if treasury is selected
+            // 🔴 تأمين محاسبي وجلب الإجمالي الصحيح
+            $exactAmount = $returnTx->total_amount ?? $returnTx->items->sum('total');
+
             if ($returnTx->treasury_id) {
-                $finType = $returnTx->type === 'sales_return' ? 'expense' : 'income'; // We pay customer back (expense) or supplier pays us (income)
+                $finType = $returnTx->type === 'sales_return' ? 'expense' : 'income';
 
                 FinancialTransaction::create([
                     'treasury_id' => $returnTx->treasury_id,
-                    'amount' => $returnTx->amount,
+                    'amount' => $exactAmount,
                     'type' => $finType,
                     'transaction_date' => date('Y-m-d'),
                     'model_type' => $returnTx->model_type,
                     'model_id' => $returnTx->model_id,
-                    'description' => ($returnTx->type === 'sales_return' ? 'رد قيمة مرتجع مبيعات' : 'استرداد قيمة مرتجع مشتريات') . ' #' . $returnTx->id,
+                    'description' => ($returnTx->type === 'sales_return' ? 'رد قيمة مرتجع مبيعات' : 'استرداد قيمة مرتجع مشتريات').' #'.$returnTx->id,
                     'user_id' => auth()->id() ?? 1,
                 ]);
 
-                // Update Treasury Balance
                 $treasury = $returnTx->treasury;
                 if ($finType === 'income') {
-                    $treasury->increment('balance', $returnTx->amount);
+                    $treasury->increment('balance', $exactAmount);
                 } else {
-                    $treasury->decrement('balance', $returnTx->amount);
+                    $treasury->decrement('balance', $exactAmount);
                 }
             } else {
-                // If no treasury is selected, affect Customer/Supplier balance
                 if ($returnTx->model_type === Customer::class) {
                     $customer = Customer::find($returnTx->model_id);
                     if ($customer) {
-                        // Customer owes us less (credit)
-                        $customer->decrement('balance', $returnTx->amount);
+                        $customer->decrement('balance', $exactAmount);
                     }
                 } elseif ($returnTx->model_type === Supplier::class) {
                     $supplier = Supplier::find($returnTx->model_id);
                     if ($supplier) {
-                        // We owe supplier less (debit)
-                        $supplier->decrement('balance', $returnTx->amount);
+                        $supplier->decrement('balance', $exactAmount);
                     }
                 }
             }

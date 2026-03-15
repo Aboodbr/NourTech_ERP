@@ -16,6 +16,7 @@ class ReturnTransaction extends Model
         'notes',
         'status',
         'total_amount',
+
     ];
 
     public function items()

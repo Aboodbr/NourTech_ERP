@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ReturnTransaction;
+use App\Http\Requests\StoreReturnTransactionRequest;
+use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\PurchaseInvoice;
-use App\Models\Customer;
+use App\Models\ReturnTransaction;
 use App\Models\Supplier;
-use App\Models\Warehouse;
 use App\Models\Treasury;
+use App\Models\Warehouse;
 use App\Services\ReturnService;
-use App\Http\Requests\StoreReturnTransactionRequest;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -60,9 +60,10 @@ class ReturnTransactionController extends Controller
             $service->createReturn($data, $request->items);
             DB::commit();
 
-            return response()->json(['message' => 'تم حفظ المرتجع بنجاح'], 200);
+            return response()->json(['message' => 'تم حفظ المرتجع كمسودة بنجاح'], 200);
         } catch (Exception $e) {
             DB::rollBack();
+
             return response()->json(['message' => $e->getMessage()], 422);
         }
     }
@@ -71,6 +72,7 @@ class ReturnTransactionController extends Controller
     {
         try {
             $returnTx = ReturnTransaction::with(['items.product', 'model', 'warehouse', 'treasury'])->findOrFail($id);
+
             return response()->json($returnTx);
         } catch (Exception $e) {
             return response()->json(['message' => 'حدث خطأ: '.$e->getMessage()], 500);
@@ -84,9 +86,10 @@ class ReturnTransactionController extends Controller
             $service->approveReturn($return);
             DB::commit();
 
-            return response()->json(['message' => 'تم ترحيل المرتجع وتحديث المخزون بنجاح!'], 200);
+            return response()->json(['message' => 'تم ترحيل المرتجع وتحديث المخزون والحسابات بنجاح!'], 200);
         } catch (Exception $e) {
             DB::rollBack();
+
             return response()->json(['message' => $e->getMessage()], 422);
         }
     }
@@ -98,7 +101,7 @@ class ReturnTransactionController extends Controller
         }
         $return->delete();
 
-        return response()->json(['message' => 'تم الحذف'], 200);
+        return response()->json(['message' => 'تم الحذف بنجاح'], 200);
     }
 
     public function getInvoiceItems(Request $request)
@@ -107,19 +110,19 @@ class ReturnTransactionController extends Controller
         $invoiceId = $request->invoice_id;
 
         if ($type === 'sales_return') {
-            $invoice = Invoice::with('items.product')->where('invoice_number', $invoiceId)->first();
+            $invoice = Invoice::with('items.product')->where('invoice_number', $invoiceId)->orWhere('id', $invoiceId)->first();
         } else {
-            $invoice = PurchaseInvoice::with('items.product')->where('invoice_number', $invoiceId)->first();
+            $invoice = PurchaseInvoice::with('items.product')->where('invoice_number', $invoiceId)->orWhere('id', $invoiceId)->first();
         }
 
-        if (!$invoice) {
-            return response()->json(['message' => 'الفاتورة غير موجودة'], 404);
+        if (! $invoice) {
+            return response()->json(['message' => 'الفاتورة غير موجودة، تأكد من الرقم والنوع'], 404);
         }
 
         return response()->json([
             'model_id' => $type === 'sales_return' ? $invoice->customer_id : $invoice->supplier_id,
             'warehouse_id' => $invoice->warehouse_id,
-            'items' => $invoice->items
+            'items' => $invoice->items,
         ]);
     }
 }
