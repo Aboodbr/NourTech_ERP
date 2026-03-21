@@ -7,52 +7,115 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProductionController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReturnTransactionController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TreasuryController;
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| Dashboard
+|--------------------------------------------------------------------------
+*/
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+/*
+|--------------------------------------------------------------------------
+| Inventory
+|--------------------------------------------------------------------------
+*/
+Route::prefix('inventory')->name('inventory.')->group(function () {
+    Route::post('move', [InventoryController::class, 'move'])->name('move');
+});
 Route::resource('inventory', InventoryController::class)->except(['show']);
-Route::post('inventory/move', [InventoryController::class, 'move'])->name('inventory.move');
-// صفحة التصنيع الرئيسية
-Route::get('/production', [ProductionController::class, 'index'])->name('production.index');
-// حفظ أمر جديد
-Route::post('/production/store', [ProductionController::class, 'store'])->name('production.store');
-// تنفيذ أمر (تحويله لمكتمل)
-Route::post('/production/{order}/complete', [ProductionController::class, 'complete'])->name('production.complete');
 
-Route::resource('bom', BomController::class);
+/*
+|--------------------------------------------------------------------------
+| Production
+|--------------------------------------------------------------------------
+*/
+Route::prefix('production')->name('production.')->group(function () {
+    Route::get('/', [ProductionController::class, 'index'])->name('index');
+    Route::post('store', [ProductionController::class, 'store'])->name('store');
+    Route::post('{order}/complete', [ProductionController::class, 'complete'])->name('complete');
+});
 
-Route::post('sales/{invoice}/approve', [SalesController::class, 'approve'])->name('sales.approve');
-Route::get('sales/{invoice}/print', [SalesController::class, 'print'])->name('sales.print');
+/*
+|--------------------------------------------------------------------------
+| BOM
+|--------------------------------------------------------------------------
+*/
+Route::resource('bom', BOMController::class);
+
+/*
+|--------------------------------------------------------------------------
+| Sales
+|--------------------------------------------------------------------------
+*/
+Route::prefix('sales')->name('sales.')->group(function () {
+    Route::post('{invoice}/approve', [SalesController::class, 'approve'])->name('approve');
+    Route::get('{invoice}/print', [SalesController::class, 'print'])->name('print');
+});
 Route::resource('sales', SalesController::class)->parameters([
     'sales' => 'invoice',
 ]);
-Route::resource('customers', CustomerController::class);
 
-Route::post('purchases/{purchase}/approve', [PurchaseController::class, 'approve'])->name('purchases.approve');
-Route::get('purchases/{purchase}/print', [PurchaseController::class, 'print'])->name('purchases.print');
+/*
+|--------------------------------------------------------------------------
+| Purchases
+|--------------------------------------------------------------------------
+*/
+Route::prefix('purchases')->name('purchases.')->group(function () {
+    Route::post('{purchase}/approve', [PurchaseController::class, 'approve'])->name('approve');
+    Route::get('{purchase}/print', [PurchaseController::class, 'print'])->name('print');
+});
 Route::resource('purchases', PurchaseController::class);
 
+/*
+|--------------------------------------------------------------------------
+| Customers & Suppliers
+|--------------------------------------------------------------------------
+*/
+Route::resource('customers', CustomerController::class);
 Route::resource('suppliers', SupplierController::class);
 
 /*
-Route::get('/treasury', [TreasuryController::class, 'index'])->name('treasury.index');
-Route::get('/treasury/create', [TreasuryController::class, 'create'])->name('treasury.create');
-Route::post('/treasury/store', [TreasuryController::class, 'store'])->name('treasury.store');
+|--------------------------------------------------------------------------
+| Treasury
+|--------------------------------------------------------------------------
 */
 Route::resource('treasury', TreasuryController::class)->except(['show']);
 
+/*
+|--------------------------------------------------------------------------
+| Reports
+|--------------------------------------------------------------------------
+*/
 Route::prefix('reports')->name('reports.')->group(function () {
     Route::get('account-statement', [ReportController::class, 'accountStatement'])->name('account_statement');
     Route::get('item-movement', [ReportController::class, 'itemMovement'])->name('item_movement');
     Route::get('shortages', [ReportController::class, 'shortages'])->name('shortages');
 });
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/settings', [App\Http\Controllers\SettingController::class, 'index'])->name('settings.index');
-Route::post('/settings', [App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');
+/*
+|--------------------------------------------------------------------------
+| Settings
+|--------------------------------------------------------------------------
+*/
+Route::prefix('settings')->name('settings.')->group(function () {
+    Route::get('/', [SettingController::class, 'index'])->name('index');
+    Route::post('/', [SettingController::class, 'update'])->name('update');
+});
 
-Route::get('/returns/invoice-items', [App\Http\Controllers\ReturnTransactionController::class, 'getInvoiceItems'])->name('returns.invoice-items');
-Route::post('/returns/{return}/approve', [App\Http\Controllers\ReturnTransactionController::class, 'approve'])->name('returns.approve');
-Route::resource('returns', App\Http\Controllers\ReturnTransactionController::class)->except(['edit', 'update']);
+/*
+|--------------------------------------------------------------------------
+| Returns
+|--------------------------------------------------------------------------
+*/
+Route::prefix('returns')->name('returns.')->group(function () {
+    Route::get('invoice-items', [ReturnTransactionController::class, 'getInvoiceItems'])->name('invoice-items');
+    Route::post('{return}/approve', [ReturnTransactionController::class, 'approve'])->name('approve');
+});
+Route::resource('returns', ReturnTransactionController::class)->except(['edit', 'update']);
