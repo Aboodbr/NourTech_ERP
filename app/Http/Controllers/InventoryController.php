@@ -6,7 +6,7 @@ use App\Enums\ProductType;
 use App\Enums\TransactionType;
 use App\Exports\ProductExport;
 use App\Http\Requests\InventoryMoveRequest;
-use App\Http\Requests\InventoryRequest; // 🔴 استدعاء ملف الريكوست
+use App\Http\Requests\InventoryRequest;
 use App\Models\Product;
 use App\Models\Warehouse;
 use App\Services\InventoryService;
@@ -28,7 +28,6 @@ class InventoryController extends Controller
      * Display a list of products and their current stock levels.
      * Includes search functionality and separates raw materials from finished goods.
      *
-     * @param Request $request
      * @return \Illuminate\View\View|\Symfony\Component\HttpFoundation\Response
      */
     public function index(Request $request)
@@ -83,11 +82,11 @@ class InventoryController extends Controller
         return view('inventory.create');
     }
 
-    // 🔴 استخدام InventoryRequest بدلاً من Request العادي
+    //
     /**
      * Store a newly created product in storage.
      *
-     * @param Request $request Validated request data.
+     * @param  Request  $request  Validated request data.
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(InventoryRequest $request)
@@ -109,7 +108,7 @@ class InventoryController extends Controller
     /**
      * Show the form for editing the specified product.
      *
-     * @param Product $inventory The product to edit.
+     * @param  Product  $inventory  The product to edit.
      * @return \Illuminate\View\View
      */
     public function edit(Product $inventory)
@@ -117,12 +116,11 @@ class InventoryController extends Controller
         return view('inventory.edit', compact('inventory'));
     }
 
-    // 🔴 استخدام InventoryRequest
     /**
      * Update the specified product in storage.
      *
-     * @param Request $request Validated request data.
-     * @param Product $inventory The product to update.
+     * @param  Request  $request  Validated request data.
+     * @param  Product  $inventory  The product to update.
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(InventoryRequest $request, Product $inventory)
@@ -143,7 +141,7 @@ class InventoryController extends Controller
     /**
      * Remove the specified product from storage.
      *
-     * @param Product $inventory The product to delete.
+     * @param  Product  $inventory  The product to delete.
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Product $inventory)
@@ -160,23 +158,17 @@ class InventoryController extends Controller
      * Perform a manual stock movement (addition or deduction).
      * Delegates the core inventory logic to InventoryService.
      *
-     * @param Request $request Validated request data.
-     * @param InventoryService $inventoryService The service handling the business logic.
+     * @param  Request  $request  Validated request data.
+     * @param  InventoryService  $inventoryService  The service handling the business logic.
      * @return \Illuminate\Http\JsonResponse
      */
     public function move(InventoryMoveRequest $request, InventoryService $inventoryService)
     {
         $data = $request->validated();
         try {
-            $product = Product::findOrFail($data['product_id']);
-            $warehouse = Warehouse::findOrFail($data['warehouse_id']);
-
-            // هنا سيتم التعرف على manual_add و manual_deduct بنجاح
             $type = TransactionType::from($data['type']);
-
             $qty = abs((float) $data['quantity']);
 
-            // 🔴 أضفنا TransactionType::MANUAL_DEDUCT هنا لكي يتم خصم الكمية
             if (in_array($type, [
                 TransactionType::SALE,
                 TransactionType::PRODUCTION_OUT,
@@ -185,7 +177,14 @@ class InventoryController extends Controller
                 $qty = -$qty;
             }
 
-            $inventoryService->moveStock($product, $warehouse, $qty, $type, null, $data['notes'] ?? null);
+            $inventoryService->moveStock(
+                $data['product_id'],       // 1. ID المنتج
+                $data['warehouse_id'],     // 2. ID المخزن
+                $qty,                      // 3. الكمية
+                $type,                     // 4. نوع الحركة
+                null,                      // 5. المرجع (لا يوجد في الحركة اليدوية)
+                $data['notes'] ?? null     // 6. الملاحظات
+            );
 
             return response()->json(['message' => 'تم تسجيل الحركة بنجاح!'], 200);
         } catch (Exception $e) {
