@@ -17,10 +17,12 @@ class Product extends Model
         'type',
         'unit',
         'min_stock',
+        'is_ordered',
     ];
 
     protected $casts = [
         'type' => ProductType::class,
+        'is_ordered' => 'boolean',
     ];
 
     // العلاقة مع الأرصدة (المخزون)

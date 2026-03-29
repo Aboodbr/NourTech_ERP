@@ -97,6 +97,7 @@ Route::prefix('reports')->name('reports.')->group(function () {
     Route::get('account-statement', [ReportController::class, 'accountStatement'])->name('account_statement');
     Route::get('item-movement', [ReportController::class, 'itemMovement'])->name('item_movement');
     Route::get('shortages', [ReportController::class, 'shortages'])->name('shortages');
+    Route::post('shortages/toggle', [ReportController::class, 'toggleShortageOrdered'])->name('shortages.toggle');
 });
 
 /*

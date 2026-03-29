@@ -39,9 +39,7 @@
             </div>
 
             <div class="col-md-3 d-flex gap-2">
-                <button type="submit" class="btn btn-primary w-100 fw-bold">
-                    بحث
-                </button>
+                <button type="submit" class="btn btn-primary w-100 fw-bold">بحث</button>
                 @if(request()->has('search') && request('search') != '')
                     <a href="{{ route('reports.shortages') }}" class="btn btn-outline-secondary w-100">
                         <i class="fa-solid fa-times me-1"></i> إلغاء
@@ -55,7 +53,7 @@
 <div class="card shadow-sm border-0 report-container">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <div class="table-responsive"><table class="table table-hover align-middle mb-0 text-center">
+            <table class="table table-hover align-middle mb-0 text-center">
                 <thead class="table-secondary">
                     <tr>
                         <th>كود الصنف</th>
@@ -63,12 +61,13 @@
                         <th>الحد الأدنى</th>
                         <th class="text-danger">الرصيد الفعلي</th>
                         <th>حالة النقص</th>
+                        <th class="d-print-none">تم الطلب؟</th> {{-- مخفي عند الطباعة --}}
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($shortages as $item)
                     @php $currentStock = $item->stocks_sum_quantity ?? 0; @endphp
-                    <tr>
+                    <tr id="row-{{ $item->id }}" class="{{ $item->is_ordered ? 'table-light opacity-75' : '' }}">
                         <td class="fw-bold">{{ $item->sku }}</td>
                         <td class="fw-bold text-primary">{{ $item->name }}</td>
                         <td class="fw-bold">{{ $item->min_stock }}</td>
@@ -80,16 +79,27 @@
                                 <span class="badge bg-warning text-body">تجاوز الحد</span>
                             @endif
                         </td>
+                        <td class="d-print-none">
+                            <div class="form-check d-flex justify-content-center">
+                                <input class="form-check-input border-secondary toggle-ordered" type="checkbox" 
+                                       data-id="{{ $item->id }}" 
+                                       {{ $item->is_ordered ? 'checked' : '' }}
+                                       style="width: 1.5em; height: 1.5em; cursor: pointer;">
+                            </div>
+                        </td>
                     </tr>
                     @empty
-                    <tr><td colspan="5" class="py-5 text-success fw-bold">جميع الأصناف متوفرة ولا توجد نواقص!</td></tr>
+                    <tr><td colspan="6" class="py-5 text-success fw-bold">جميع الأصناف متوفرة ولا توجد نواقص!</td></tr>
                     @endforelse
                 </tbody>
-            </table></div>
+            </table>
         </div>
     </div>
 </div>
-<div class="d-flex justify-content-center mt-3 d-print-none">{{ $shortages->links('pagination::bootstrap-5') }}</div>
+
+<div class="d-flex justify-content-center mt-3 d-print-none">
+    {{ $shortages->links('pagination::bootstrap-5') }}
+</div>
 
 <style>
     @media print { 
@@ -100,4 +110,52 @@
         .table-secondary th { background-color: #343a40 !important; color: white !important; }
     }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('.toggle-ordered');
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const productId = this.dataset.id;
+            const isChecked = this.checked ? 1 : 0;
+            const row = document.getElementById(`row-${productId}`);
+
+            // إضافة تأثير بصري أثناء الحفظ
+            row.style.opacity = '0.5';
+
+            fetch("{{ route('reports.shortages.toggle') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    id: productId,
+                    is_ordered: isChecked
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                row.style.opacity = '1';
+                if(data.success) {
+                    if(isChecked) {
+                        row.classList.add('table-light', 'opacity-75');
+                    } else {
+                        row.classList.remove('table-light', 'opacity-75');
+                    }
+                } else {
+                    alert('حدث خطأ أثناء التحديث');
+                    this.checked = !this.checked; // إرجاع الحالة الأصلية عند الفشل
+                }
+            })
+            .catch(error => {
+                row.style.opacity = '1';
+                alert('خطأ في الاتصال بالسيرفر');
+                this.checked = !this.checked;
+            });
+        });
+    });
+});
+</script>
 @endsection

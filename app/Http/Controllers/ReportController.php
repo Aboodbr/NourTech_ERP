@@ -123,6 +123,20 @@ class ReportController extends Controller
         return view('reports.shortages', compact('shortages'));
     }
 
+    public function toggleShortageOrdered(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:products,id',
+            'is_ordered' => 'required|boolean',
+        ]);
+
+        $product = Product::findOrFail($request->id);
+        $product->is_ordered = $request->is_ordered;
+        $product->save();
+
+        return response()->json(['success' => true]);
+    }
+
     // =========================================================================
     // دوال تصدير Excel (CSV)
     // =========================================================================
