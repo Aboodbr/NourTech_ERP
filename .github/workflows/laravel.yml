@@ -1,0 +1,51 @@
+name: Laravel
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. سحب الكود أولاً
+    - uses: actions/checkout@v4
+
+    # 2. إعداد إصدار PHP حديث (تأكد من مطابقته للإصدار الذي تستخدمه محلياً)
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2' # قم بتغييرها إلى 8.3 إذا كان مشروعك يتطلب ذلك
+        tools: composer:v2
+
+    # 3. نسخ ملف البيئة
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+    # 4. تثبيت الحزم (إزالة -q مؤقتاً لترى الأخطاء إن وجدت)
+    - name: Install Dependencies
+      run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+    # 5. إنشاء مفتاح التطبيق
+    - name: Generate key
+      run: php artisan key:generate
+
+    # 6. إعطاء الصلاحيات
+    - name: Directory Permissions
+      run: chmod -R 777 storage bootstrap/cache
+
+    # 7. إعداد قاعدة بيانات الاختبار
+    - name: Create Database
+      run: |
+        mkdir -p database
+        touch database/database.sqlite
+
+    # 8. تشغيل الاختبارات
+    - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
+      env:
+        DB_CONNECTION: sqlite
+        DB_DATABASE: database/database.sqlite
+      run: php artisan test
