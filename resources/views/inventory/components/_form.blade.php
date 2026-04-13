@@ -43,6 +43,7 @@
             <option value="متر" {{ old('unit', $item->unit ?? '') == 'متر' ? 'selected' : '' }}>متر (Meter)</option>
             <option value="لتر" {{ old('unit', $item->unit ?? '') == 'لتر' ? 'selected' : '' }}>لتر (Liter)</option>
             <option value="طقم" {{ old('unit', $item->unit ?? '') == 'طقم' ? 'selected' : '' }}>طقم (Set)</option>
+            <option value="كيس" {{ old('unit', $item->unit ?? '') == 'كيس' ? 'selected' : '' }}>كيس (Bag)</option>
         </select>
     </div>
 
