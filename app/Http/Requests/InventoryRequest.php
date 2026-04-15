@@ -31,7 +31,7 @@ class InventoryRequest extends FormRequest
                 Rule::unique('products', 'sku')->ignore($inventoryId),
             ],
             'name' => 'required|string|max:255',
-            'type' => 'required|in:raw_material,finished_good',
+            'type' => ['required', new Enum(ProductType::class)],
             'unit' => 'required|string|max:50',
             'min_stock' => 'required|numeric|min:0',
         ];
@@ -47,7 +47,7 @@ class InventoryRequest extends FormRequest
             'sku.unique' => 'هذا الكود مسجل مسبقاً لمادة أخرى.',
             'name.required' => 'اسم المادة مطلوب.',
             'type.required' => 'يرجى تحديد نوع المادة.',
-            'unit.required' => 'يرجى تحديد وحدة القياس (قطعة، كيلو، متر...).', // 🔴 رسالة الخطأ
+            'unit.required' => 'يرجى تحديد وحدة القياس (قطعة، كيلو، متر...).',
             'min_stock.required' => 'حد التنبيه (النواقص) مطلوب.',
         ];
     }

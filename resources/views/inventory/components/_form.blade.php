@@ -31,6 +31,9 @@
         <select name="type" class="form-select" required>
             <option value="raw_material" {{ old('type', optional($item->type)->value ?? $item->type) == 'raw_material' ? 'selected' : '' }}>مادة خام</option>
             <option value="finished_good" {{ old('type', optional($item->type)->value ?? $item->type) == 'finished_good' ? 'selected' : '' }}>منتج تام</option>
+            
+            {{-- الإضافة الجديدة للصنف الخدمي --}}
+            <option value="service" {{ old('type', optional($item->type)->value ?? $item->type) == 'service' ? 'selected' : '' }}>صنف خدمي / غير مخزني</option>
         </select>
     </div>
 
@@ -44,6 +47,9 @@
             <option value="لتر" {{ old('unit', $item->unit ?? '') == 'لتر' ? 'selected' : '' }}>لتر (Liter)</option>
             <option value="طقم" {{ old('unit', $item->unit ?? '') == 'طقم' ? 'selected' : '' }}>طقم (Set)</option>
             <option value="كيس" {{ old('unit', $item->unit ?? '') == 'كيس' ? 'selected' : '' }}>كيس (Bag)</option>
+            
+            {{-- الإضافة الجديدة لوحدة الخدمة --}}
+            <option value="خدمة" {{ old('unit', $item->unit ?? '') == 'خدمة' ? 'selected' : '' }}>خدمة (Service)</option>
         </select>
     </div>
 

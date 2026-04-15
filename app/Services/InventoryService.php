@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\ProductType;
 use App\Enums\TransactionType;
 use App\Models\InventoryTransaction;
 use App\Models\Product;
@@ -14,14 +15,7 @@ use Illuminate\Support\Facades\DB;
 class InventoryService
 {
     /**
-     * تنفيذ حركة مخزنية (صرف أو إضافة)
-     *
-     * @param  int  $productId  معرف المنتج
-     * @param  int  $warehouseId  معرف المخزن
-     * @param  float  $quantity  الكمية (موجب للزيادة، سالب للنقص)
-     * @param  TransactionType  $type  نوع الحركة (شراء، بيع، تصنيع...)
-     * @param  Model|null  $reference  المرجع (فاتورة Invoice، أو أمر شغل ProductionOrder، أو null للحركات اليدوية)
-     * @param  string|null  $notes  ملاحظات
+     * تنفيذ حركة مخزنية
      */
     public function moveStock(
         int $productId,
@@ -30,16 +24,23 @@ class InventoryService
         TransactionType $type,
         ?Model $reference = null,
         ?string $notes = null
-    ): InventoryTransaction {
+    ): ?InventoryTransaction {
+
+        // تجاهل الأصناف الخدمية
+        $product = Product::find($productId);
+        if ($product && $product->type === ProductType::SERVICE) {
+            return null;
+        }
+
         return DB::transaction(function () use ($productId, $warehouseId, $quantity, $type, $reference, $notes) {
 
-            // 1. البحث عن سجل الرصيد مع قفله (Lock) لمنع التضارب أثناء الحفظ المزدوج
+            // قفل السجل لمنع التضارب
             $stock = Stock::where('product_id', $productId)
                 ->where('warehouse_id', $warehouseId)
                 ->lockForUpdate()
                 ->first();
 
-            // إذا لم يكن المنتج موجوداً في هذا المخزن من قبل، ننشئ له سجلاً برصيد 0
+            // إنشاء سجل جديد إذا لم يوجد
             if (! $stock) {
                 $stock = Stock::create([
                     'product_id' => $productId,
@@ -48,13 +49,10 @@ class InventoryService
                 ]);
             }
 
-            // 2. التحقق من كفاية الرصيد (فقط في حالة الصرف/السحب)
+            // التحقق من كفاية الرصيد للصرف
             if ($quantity < 0) {
-                // نحسب الرصيد المتوقع بعد العملية
                 if (($stock->quantity + $quantity) < 0) {
                     $required = abs($quantity);
-
-                    // الاستعلام عن الأسماء فقط عند حدوث الخطأ لتوفير موارد قاعدة البيانات
                     $productName = Product::where('id', $productId)->value('name') ?? 'غير معروف';
                     $warehouseName = Warehouse::where('id', $warehouseId)->value('name') ?? 'غير معروف';
 
@@ -68,15 +66,15 @@ class InventoryService
                 }
             }
 
-            // 3. تحديث الرصيد الفعلي
+            // تحديث الرصيد
             $stock->increment('quantity', $quantity);
 
-            // 4. تسجيل الحركة في الأرشيف (History)
+            // تسجيل حركة الأرشيف
             return InventoryTransaction::create([
                 'stock_id' => $stock->id,
                 'type' => $type,
                 'quantity' => $quantity,
-                'user_id' => auth()->id(), // المستخدم الحالي
+                'user_id' => auth()->id(),
                 'reference_type' => $reference ? get_class($reference) : null,
                 'reference_id' => $reference ? $reference->id : null,
                 'notes' => $notes,
@@ -85,7 +83,7 @@ class InventoryService
     }
 
     /**
-     * دالة التحويل بين المخازن
+     * التحويل بين المخازن
      */
     public function transfer(
         int $productId,
@@ -96,11 +94,11 @@ class InventoryService
     ) {
         return DB::transaction(function () use ($productId, $fromWarehouseId, $toWarehouseId, $quantity, $notes) {
 
-            // للحصول على أسماء المخازن في الملاحظات (يمكن الاستغناء عنها لو أردت أداءً أسرع)
+            // جلب أسماء المخازن
             $fromWarehouseName = Warehouse::where('id', $fromWarehouseId)->value('name');
             $toWarehouseName = Warehouse::where('id', $toWarehouseId)->value('name');
 
-            // خصم من المصدر
+            // الخصم من المصدر
             $this->moveStock(
                 $productId,
                 $fromWarehouseId,
@@ -110,7 +108,7 @@ class InventoryService
                 "تحويل صادر إلى: {$toWarehouseName} - $notes"
             );
 
-            // إضافة للمستلم
+            // الإضافة للمستلم
             $this->moveStock(
                 $productId,
                 $toWarehouseId,
