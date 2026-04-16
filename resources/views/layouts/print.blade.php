@@ -113,7 +113,7 @@
 
         <div class="header-section">
             <div class="header-text">
-                <h1>المصنع العربي للمصنوعات (AMC)</h1>
+                <h1>المصنعون العرب (AMC)</h1>
                 <h2>@yield('header-title', 'نظام إدارة المصنع')</h2>
                 <p>NourTech ERP System</p>
             </div>
@@ -127,7 +127,7 @@
         </div>
 
         <div class="footer-section">
-            <p>المصنع العربي للمصنوعات (AMC) - القاهرة، مصر</p>
+            <p>المصنعون العرب (AMC)</p>
             <p>تم استخراج هذا المستند إلكترونياً بتاريخ: {{ date('Y-m-d H:i') }}</p>
         </div>
     </div>
