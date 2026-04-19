@@ -33,6 +33,20 @@
         overflow-x: hidden;
         transition: background-color 0.3s ease, color 0.3s ease;
     }
+    #itemsTable input.form-control {
+        min-width: 110px; 
+    }
+    
+    /* تحديد عرض أدنى لقائمة اختيار الصنف (Select2) */
+    #itemsTable .select2-container {
+        min-width: 250px !important;
+    }
+
+    /* توسيط محتوى الجدول عمودياً لشكل أرتب */
+    #itemsTable td, #itemsTable th {
+        vertical-align: middle;
+        white-space: nowrap; /* يمنع نزول النص لسطر جديد في العناوين */
+    }
 
     /* --- تنسيق الـ Wrapper والسايدبار (متجاوب) --- */
     #wrapper {
